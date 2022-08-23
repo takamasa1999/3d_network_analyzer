@@ -18,7 +18,7 @@ document.getElementById("value_form").style.display ="none";
 // データ選択イベント
 function DataUpload(){
   var func_name = arguments.callee.name
-  $.ajax({
+    $.ajax({
     url: 'cgi.php',
     type:'POST',
     dataType: 'text',
