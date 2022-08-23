@@ -8,5 +8,5 @@ takamasa: バックエンドその他
 
 参考サイト  
 cgi設置：https://www.javadrive.jp/apache/php/index5.html  
-ディレクトリ構成：https://shuu1104.com/2021/04/2445/
+ディレクトリ構成：https://shuu1104.com/2021/04/2445/  
 SSL証明：https://knowledge.sakura.ad.jp/7938/
