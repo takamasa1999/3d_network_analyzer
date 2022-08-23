@@ -153,6 +153,8 @@ def RemoveBetween(data, st, end):
     result = data_rev1 + data_rev2
     return(result)
 
+server_dir = "C:/Server/Apache/Apache24/cgi-bin/3d_co_occurense_network/server/"
+
 #jsonファイルの受け取り, ajax本番
 user_ip = sys.argv[1]
 lowest_occure = float(sys.argv[2])
@@ -161,18 +163,17 @@ lowest_simpson = float(sys.argv[3])
 # user_ip = "2a02a44aa4f81c53fdd86f27b397e"
 # lowest_occure = 0
 # lowest_simpson = 0
-res_dir = "C:/Server/Apache/Apache24/htdocs/3D_Analytics/cashe/"
-res_file = res_dir + user_ip + "_res.json"
+
 scatter_coef  = math.e #アルゴリズム完成次第、引数化する予定、、
 occur_low_lim = lowest_occure #最低共起件数。
 simpson_low_lim = lowest_simpson #シンプソン係数の下限値。
 
 # jsonファイルをインポート（data type: list）
-data_dir = res_dir + user_ip + "_data.json"
+data_dir = server_dir + "cashe/" + user_ip + "_data.json"
 data_open = open(data_dir, 'r', encoding="utf-8_sig")
 data_load = json.load(data_open)
 data_array = data_load["data_array"] #list内はstr型
-req_dir = res_dir + user_ip + "_req.json"
+req_dir = server_dir + "cashe/" + user_ip + "_req.json"
 req_open = open(req_dir, 'r', encoding="utf-8_sig")
 req_load = json.load(req_open)
 
@@ -323,8 +324,8 @@ plt_layout = go.Layout(
                     )
 fig = go.Figure(data = plt_data, layout = plt_layout)
 
-html_save_name = "C:/Server/Apache/Apache24/htdocs/3D_Analytics/cashe/" + user_ip + ".html"
-fig.write_html(html_save_name,include_plotlyjs = False, full_html = False)
+html__out_dir = server_dir + "/cashe/" + user_ip + ".html"
+fig.write_html(html__out_dir, include_plotlyjs = False, full_html = False)
 
 print("success!")
 #処理時間の表示

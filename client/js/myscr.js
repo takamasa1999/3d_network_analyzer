@@ -19,7 +19,7 @@ document.getElementById("value_form").style.display ="none";
 function DataUpload(){
   var func_name = arguments.callee.name
     $.ajax({
-    url: 'cgi.php',
+    url: '/cgi-bin/3d_co_occurense_network/server/php/cgi.php',
     type:'POST',
     dataType: 'text',
     data : {
@@ -116,7 +116,7 @@ function RequestSend(){
   var lowest_simpson = document.getElementById('lowest_simpson').value;
   var func_name = arguments.callee.name
   $.ajax({
-    url: 'ajax.php',
+    url: '/cgi-bin/3d_co_occurense_network/server/php/ajax.php',
     type: 'POST',
     dataType: 'text',
     data : {
@@ -132,8 +132,8 @@ function RequestSend(){
     }
   }).done(function(data){
     console.log("Ajax:" + func_name + "()⇒Success!\n-----------return---------------\n" + data);
-    if (data == "ajax.php⇒success!\ncalc.py⇒ success!") {
-    GraphReceive()
+    if (data == "calc.py⇒ success!\nEnd of {ajax.php}") {
+    HtmlReceive()
   }else {
     alert("Adjust value and try again")
   }
@@ -143,19 +143,49 @@ function RequestSend(){
     $("#loader-wrap").fadeOut(300);
   });
 }
-function GraphReceive(){
+// function HtmlReceive(){
+//   var func_name = arguments.callee.name
+//   $.ajax({
+//     url: '/cgi-bin/3d_co_occurense_network/server/cashe/' + user_ip + ".html",
+//     type: 'POST',
+//     dataType: 'html',
+//     error: function(jqxhr, status, exception) {
+//       console.debug('jqxhr', jqxhr);
+//       console.debug('status', status);
+//       console.debug('exception', exception);
+//     }
+//   }).done(function(data){
+//     console.log("Ajax:" + func_name + "()⇒Success!\n-----------return---------------\n");
+//     let parent = document.getElementById('received_data');
+//     while(parent.lastChild){
+//       parent.removeChild(parent.lastChild);
+//     }
+//     $('#received_data').append(data);
+//     document.getElementById("received_data").style.visibility = "";
+//   }).fail(function (data) {
+//     console.log("Ajax:" + func_name + "()⇒Failed...\n-----------return---------------\n");
+//   }).always(function(data){
+//     $("#loader-wrap").fadeOut(300);
+//   });
+// }
+
+function HtmlReceive(){
+  $("#loader-wrap").fadeIn(300);
   var func_name = arguments.callee.name
   $.ajax({
-    url: 'cashe/' + user_ip + ".html",
+    url: '/cgi-bin/3d_co_occurense_network/server/php/html_receive.php',
     type: 'POST',
-    dataType: 'html', //jsonの準備が整ったら変更
+    dataType: 'text',
+    data : {
+      user_ip : user_ip,
+    },
     error: function(jqxhr, status, exception) {
       console.debug('jqxhr', jqxhr);
       console.debug('status', status);
       console.debug('exception', exception);
     }
   }).done(function(data){
-    console.log("Ajax:" + func_name + "()⇒Success!\n-----------return---------------\n");
+    console.log("Ajax:" + func_name + "()⇒Success!\n-----------return---------------\n" + data);
     let parent = document.getElementById('received_data');
     while(parent.lastChild){
       parent.removeChild(parent.lastChild);
@@ -163,20 +193,8 @@ function GraphReceive(){
     $('#received_data').append(data);
     document.getElementById("received_data").style.visibility = "";
   }).fail(function (data) {
-    console.log("Ajax:" + func_name + "()⇒Failed...\n-----------return---------------\n");
+    console.log("Ajax:" + func_name + "()⇒Failed...\n-----------return---------------\n" + data);
   }).always(function(data){
     $("#loader-wrap").fadeOut(300);
   });
 }
-
-
-// // 乱数作成。ページIDに使おうと思っていた。
-// function GenRandom(){
-//   let chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-//   let rand_str = '';
-//   for ( var i = 0; i < 16; i++ ) {
-//     rand_str += chars.charAt(Math.floor(Math.random() * chars.length));
-//   }
-//   return(rand_str)
-// }
-// var page_id = GenRandom();
