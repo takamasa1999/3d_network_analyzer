@@ -9,6 +9,6 @@ takamasa: バックエンドその他
 参考サイト  
 cgi設置：https://www.javadrive.jp/apache/php/index5.html  
 ディレクトリ構成：https://shuu1104.com/2021/04/2445/  
-ポート開放の確認: https://turningp.jp/server-client/windows/windows-port_check
-SSL証明：https://softwarenote.info/p2880/ 
-windows起動時にapacheを起動（サービスとして起動）: https://www.javadrive.jp/apache/install/index3.html
+ポート開放の確認: https://turningp.jp/server-client/windows/windows-port_check  
+SSL証明：https://softwarenote.info/p2880/  
+windows起動時にapacheを起動（サービスとして起動）: https://www.javadrive.jp/apache/install/index3.html  
