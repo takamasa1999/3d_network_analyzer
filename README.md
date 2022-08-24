@@ -1,6 +1,6 @@
 # 3d_co_occurense_network_client
 Origin: 2022/8/22  
-http://tkworkfrom220320.com/3d_co_occurense_network/client/home.html  
+https://tkworkfrom220320.com/3d_co_occurense_network/client/home.html  
 (ssl証明を取得してhttps化する予定)
 
 masanao: フロントデザイン開発  
