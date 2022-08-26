@@ -4,56 +4,130 @@ body{
 }
 .page_top{
   text-decoration: underline;
+  font-size: 5rem;
 }
 
-.upload_data {
+.p_4rem{
+  margin: 4rem;
+}
+
+
+.button_flex{
+  display: flex;
+  justify-content: space-between;
+}
+.file_select {
     display: none;
 }
-.buttonLabel1 {
-  display: inline-block;
-  padding: 0.3em 1em;
-  text-decoration: none;
+.file_select_label {
+  padding: 0.5rem 1rem;
   color: #67c5ff;
-  border: solid 2px #67c5ff;
-  border-radius: 3px;
+  border: solid 0.2rem #67c5ff;
+  border-radius: 0.3rem;
   transition: .4s;
+  font-size: 4rem;
 }
-.buttonLabel1:hover {
+.file_select_label:hover {
   background: #67c5ff;
   color: white;
+}
+.update_value{
+  padding: 0.5rem 1rem;
+  font-size: 4rem;
+  color: #67c5ff;
+  border: solid 0.2rem #67c5ff;
+  border-radius: 0.3rem;
+  transition: .4s;
+  background-color: rgb(255, 255, 255);
 }
 
 .data_check_form{
   overflow:auto;
-  width:100%;
+  /* top:0; */
+  display: flex;
+
+  width:95vw;
+  height:40vh;
+  margin: 0 2.8vw 0 2.2vw;
+  box-shadow: rgba(14, 30, 37, 0.12) 0rem 0.25rem 0.5rem 0rem, rgba(14, 30, 37, 0.32) 0rem 0.25rem 2rem 0rem;
 }
 
-.data_check{
-  background-color:rgb(255, 255, 255);
-  /* width:100%;
-  height:100%; */
-  font-size: 100%;
+.modebar-btn {
+    font-size: 4rem !important;
+}
+
+.data_check_table{
+  background-color: #f8ffcd;
+  width:100%;
+  height:100%;
+  font-size: 2rem;
   text-align: center;
-  border-collapse: collapse;
+  /* border-collapse: collapse; */
   border-spacing: 0;
 }
-.data_check tr {
- padding: 10px;
- background: #ffffff;
+.data_check_table tr {
+ padding: 1rem;
  border: solid 1px #778ca3;
 }
-.data_check td {
- padding: 10px;
+.data_check_table td {
+ padding: 1rem;
  border: solid 1px #778ca3;
+}
+
+.chk_box_div {
+	margin:0rem 0rem 0rem 0rem;
+  height:3rem;
+  width:3rem
+}
+/* ラベルのスタイル*/
+.chk_box_div label {
+	font-size:4rem;
+  line-height: 3rem;
+	display: flexinline-block;
+	cursor: pointer;
+	/* position: Left; */
+}
+/* ボックスのスタイル */
+.chk_box_div label:before {
+	content:'';
+	width: 3rem; /* ボックスの横幅 */
+	height: 3rem; /* ボックスの縦幅 */
+	display:inline-block;
+	/* position:Left; */
+	/* left:0; */
+	background-color:	#fff;
+	box-shadow:inset 0.1rem 0.2rem 0.3rem 0rem #000;
+	border-radius:0.6rem 0.6rem 0.6rem 0.6rem;
+}
+/* 元のチェックボックスを表示しない */
+.chk_box_div input[type=checkbox] {
+	display:none;
+}
+/* チェックした時のスタイル */
+.chk_box_div input[type=checkbox]:checked + label:before {
+	content: '\2713';		/* チェックの文字 */
+	color: #000000;			/* チェックの色 */
+	background-color: #67c5ff;/* チェックした時の色 */
 }
 
 .value_input_div{
   display: inline-block;
+  padding: 0rem 3rem 0rem 0rem;
+}
+.value_input_label{
+  font-size: 3rem;
+}
+.value_input{
+  font-size: 3rem;
+}
+
+.network_name{
+  font-size: 2rem;
 }
 
 .received_data{
-  /* height: 100%; */
-  width: 100%;
+  width: 100vw;
+  height: 100vw;
   border: solid 1px #778ca3;
 }
 
