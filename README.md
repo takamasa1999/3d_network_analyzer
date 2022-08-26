@@ -24,4 +24,7 @@ Repainter: Server side
 > Python
 >> Plotly  
 >>>- scatter 3d: https://plotly.com/python/reference/scatter3d/
->>>- Layout : https://plotly.com/python-api-reference/generated/plotly.graph_objects.Layout.html
+
+>Java script  
+>>Plotly
+>>>- Layout : https://plotly.com/javascript/reference/layout/
