@@ -27,4 +27,5 @@ Repainter: Server side
 
 >Java script  
 >>Plotly  
->>>- Layout : https://plotly.com/javascript/reference/layout/  
+>>>- Reference : https://plotly.com/r/reference/index/
+
