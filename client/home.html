@@ -7,16 +7,19 @@
     <link rel="stylesheet" href="css/home_style.css">
     <!-- ライブラリ読み込みなのでheadの最後 -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://cdn.plot.ly/plotly-2.14.0.min.js"></script>
+    <script src="js/plotly-2.14.0.min.js"></script>
+    <script type="text/javascript" src="js/encoding.js"></script>
   </head>
   <body>
     <div class="loader-wrap" id="loader-wrap">
       <div class="loader" id="loader">Loading...</div>
     </div>
-    <h1 class = page_top>3D network data analysis</h1>
+    <h1 class = page_top>3D-network data analysis</h1>
     <div class="button_flex">
       <label id=file_select_label class=file_select_label>
-        <input type="file" id="file_select" class="file_select" name="file_select" accept=".csv" onchange="MakeTable()">
+        <form name=file_select_form>
+          <input type="file" id="file_select" class="file_select" name="file_select" accept=".csv" onchange="MakeTable()">
+        </form>
         File select
       </label>
       <button type="button" name="update_value" class=update_value id=update_value onclick="ValueUpdate()">Plot graph!</button>
@@ -40,14 +43,13 @@
         </label>
       </div>
       <!-- <button type="button" name="update_value" class=update_value onclick="ValueUpdate()">Update value</button> -->
-      <p id=network_name class=network_name></p>
     </form>
     <br>
     <div id="received_data" class="received_data"></div>
+    <div class="network_name_div" id="network_name_div">
+      <p id="network_name" class="network_name"></p>
+    </div>
     <!-- 実行系scriptなのでbodyの最後 -->
     <script type="text/javascript" src="js/myscr.js"></script>
   </body>
 </html>
-
-<label for=""></label>
-

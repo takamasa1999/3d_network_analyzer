@@ -18,10 +18,25 @@ def GetCombination(list_data, comb_num):
     list_comb = itertools.combinations(list_data, comb_num)
     list_comb = list(list_comb)
     return(list_comb)
+def AddBr(str, width):
+    str_rev = ""
+    for i in range(0, len(str)):
+        if i % width == 0 and i!=0:
+            str_rev+= "<br>"
+        str_rev+= str[i]
+    return(str_rev)
 def DataPreparation(data):
-    col_name = data[0]
-    act_data = data[1:]
-    act_data_rev = AppendColumnName(data[0], data[1:])
+    data_rev = []
+    for row in data:
+        row_rev = []
+        for elem in row:
+            elem_rev = AddBr(elem, 12)
+            row_rev.append(elem_rev)
+        data_rev.append(row_rev)
+    print(data_rev)
+    col_name = data_rev[0]
+    act_data = data_rev[1:]
+    act_data_rev = AppendColumnName(col_name, act_data)
     dict = {"col_name":col_name, "act_data":act_data_rev}
     return(dict)
 def AppendColumnName(col_list, data_list):
@@ -31,7 +46,7 @@ def AppendColumnName(col_list, data_list):
         i = 0
         try:
             for elem in row:
-                elem = "colmun: " + col_list[i] + "<br>element: " + elem
+                elem = col_list[i] + "<br>⇒" + elem
                 arr2.append(elem)
                 i = i + 1
         except Exception as e:
@@ -102,7 +117,7 @@ def GetSpringLayout(list_data, n1, n1_w, n2, n2_w, e_w, coef):
     for data in node_data:
         G.add_node(data[0], weight = data[1])
     for data in list_data:
-        G.add_edge(data[n1], data[n2], weight = data[e_w])
+        G.add_edge(data[n1], data[n2], weight = data[e_w]/1000)
     layout = nx.spring_layout(G, dim = 3)
     return(layout)
 def ReferDictAddColumn(list_data, col_num, ref_dict):
@@ -147,10 +162,12 @@ server_dir = "C:/Server/Apache/Apache24/cgi-bin/3d_co_occurense_network/server/"
 user_ip = sys.argv[1]
 lowest_occure = float(sys.argv[2])
 lowest_simpson = float(sys.argv[3])
+screen_size = float(sys.argv[4])
 # pyテスト用引数
-# user_ip = "2a02a44aa4f8199a3233d78c01186"
-# lowest_occure = 100
-# lowest_simpson = 0.6
+# user_ip = "2a02a44aa4f8199757ad764761452"
+# lowest_occure = 20
+# lowest_simpson = 0.3
+# screen_size = float(16)
 
 node_rel_size_coef = 2 # y=x^(-node_rel_size_coef), 数量差の大きいデータの幅を縮める
 node_size_coef = 50
@@ -198,6 +215,7 @@ node_layout = GetSpringLayout(master_tbl, 0, 1, 2, 3, 5, 100)
 master_tbl = ReferDictAddColumn(master_tbl, 0, node_layout)
 master_tbl = ReferDictAddColumn(master_tbl, 2, node_layout)
 master_tbl.insert(0, master_tbl_colname)
+
 plot_data = []
 
 #ノードデータ処理
@@ -207,7 +225,7 @@ node_pos = GetColumn(node_data, 2)
 node_val = np.array(GetColumn(node_data, 1))
 node_size = [elem**(1/node_rel_size_coef) for elem in node_val]
 node_size_max = max(node_size)
-node_size_rel = [num/node_size_max for num in node_size]
+node_size_rel = [(num/node_size_max)*(screen_size/5) for num in node_size]
 node_size_rel = np.array(node_size_rel)*node_size_coef
 node_size_rel_max = max(node_size_rel)
 node_size_rel_min = min(node_size_rel)
@@ -215,26 +233,30 @@ node_color = [ValueToRGB(num, node_size_rel_max , node_size_rel_min,
                          Ra = 255, Ga = 220, Ba = 220, Aa = 1,
                          Rb = 255, Gb = 0, Bb = 0, Ab = 1,) for num in node_size_rel]
 node_txt_elem = [str(data[0]) for data in node_data]
-node_txt_val = ["<br><Value><br>occure = " + str(data[1]) for data in node_data]
+node_txt_val = ["<br><br>occure = " + str(data[1]) for data in node_data]
 
 #ノードデータ受け渡し
 i = 0
 for pos in node_pos:
     node_dict = {
         "hoverinfo":"text",
-        "hovertext":"<Node><br>" + node_txt_elem[i] + node_txt_val[i],
+        "hovertext":node_txt_elem[i] + node_txt_val[i],
         "marker":{
             "color":node_color[i],
             "opacity":1,
             "size":node_size_rel[i],
+            "line":{
+                "width":100,
+                "color":"rgb(0, 0, 0)",
+                },
             },
-        "mode":"markers+text",
-        "name":"<Node><br>" + node_txt_elem[i] + node_txt_val[i],
-        "text":RemoveBetween(node_txt_elem[i], "colmun:", "element:"),
+        "mode":"markers+lines+text",
+        "name":node_txt_elem[i] + node_txt_val[i],
+        "text":node_txt_elem[i],
         "x":[pos[0]],
         "y":[pos[1]],
         "z":[pos[2]],
-        "type":"scatter3d"
+        "type":"scatter3d",
     }
     plot_data.append(node_dict)
     i = i + 1
@@ -247,7 +269,7 @@ edge_txt_elem = []
 edge_txt_val = []
 for data in master_tbl[1:]:
     txt_elem = str(data[4])
-    txt_val = ("<br><Value><br>co-occure = " + str(data[5])
+    txt_val = ("<br><br>co-occure = " + str(data[5])
                 + "<br>simpson = " + str(round(data[6], 4))
                 )
     edge_txt_elem.append(txt_elem)
@@ -257,8 +279,8 @@ edge_jec_rev = [num**(1/edge_color_coef) for num in edge_jec]
 edge_jec_max = max(edge_jec_rev)
 edge_jec_min = min(edge_jec_rev)
 edge_color = [ValueToRGB(data, edge_jec_max , edge_jec_min,
-                         Ra = 220, Ga = 220, Ba = 255, Aa = 1,
-                         Rb = 0, Gb = 0, Bb = 255, Ab = 1,) for data in edge_jec_rev]
+                         Ra = 0, Ga = 255, Ba = 255, Aa = 1,
+                         Rb = 255, Gb = 0, Bb = 255, Ab = 1,) for data in edge_jec_rev]
 
 #エッジデータ受け渡し。
 i=0
@@ -270,12 +292,15 @@ for pos in edge_pos:
             "opacity":1
             },
         "mode":"lines",
-        "name":"<Edge><br>" + edge_txt_elem[i] + edge_txt_val[i],
-        "text":[None, "<Edge><br>" + edge_txt_elem[i] + edge_txt_val[i], None],
+        "name":edge_txt_elem[i] + edge_txt_val[i],
+        "text":[None, edge_txt_elem[i] + edge_txt_val[i], None],
         "x":[pos[0][0], pos[1][0], pos[2][0]],
         "y":[pos[0][1], pos[1][1], pos[2][1]],
         "z":[pos[0][2], pos[1][2], pos[2][2]],
-        "type":"scatter3d"
+        "type":"scatter3d",
+        "line": {
+            "width": screen_size/3,
+            },
     }
     plot_data.append(edge_dict)
     i = i + 1

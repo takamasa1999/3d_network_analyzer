@@ -10,9 +10,10 @@ GetUserIP()
 // html操作
 document.getElementById("data_check_form").style.display ="none";
 document.getElementById("loader-wrap").style.display ="none";
-document.getElementById("received_data").style.visibility = "hidden";
+document.getElementById("received_data").style.display ="none";
 document.getElementById("value_form").style.display ="none";
 document.getElementById("update_value").style.display ="none";
+document.getElementById("network_name_div").style.display ="none";
 
 function RemToPx(rem) {
   var fontSize = getComputedStyle(document.documentElement).fontSize;
@@ -50,59 +51,95 @@ function DataUpload(){
 }
 var data_array = [];
 function CsvToArray(csv) {
-  data_array.length = 0; //グローバル変数の初期化
-  var dataString = csv.split('\n');
-  for (let i = 0; i < dataString.length; i++) {
-    data_array[i] = dataString[i].split(',');
+  data_array.length = 0; //初期化
+  var row_sec = csv.split('\n');
+  var row_head = row_sec[0].split(',');
+  for (let a = 0; a < row_sec.length; a++) {
+    var row = row_sec[a].split(',');
+    var row_rev = [];
+    for (let b = 0; b < row_head.length; b++){
+      if (row[b]===undefined) {
+        row_rev.push('');
+      }else{
+        row_rev.push(row[b]);
+      }
+    };
+    data_array.push(row_rev);
   }
 }
 function ArrayToTable(array){
   var insertElement = '';
   var column = array[0].length;
-  for (let a = 0; a < 20; a++){
-    insertElement += '<tr>';
-    // 1行目にチェックボックスを追加
-    if (a==0) {
-      insertElement += '<tr>';
-      for (let b = 0; b < column; b++){
-        num = b+1
-        insertElement +='<td>\
-                          <div class="chk_box_div">\
-                            <input type="checkbox" name="chk_box"' + ' id="chk_box' + num + '"' +' value=' + b + '>\
-                            <label for="chk_box' + num + '"' + '></label>\
-                          </div>\
-                        </td>';
-      }
-      insertElement += '</tr>';
+  var row_lim = Math.min(array.length, 40);
+  for (let a = 0; a < row_lim-1; a++){
+    switch (a) {
+      case 0:
+        insertElement += '<tr>';
+        for (let b = 0; b < column; b++){
+          num = b+1
+          insertElement += '<th>'
+          insertElement += '<div class="chk_box_div">\
+                              <input type="checkbox" name="chk_box"' + ' id="chk_box' + num + '"' +' value=' + b + '>\
+                              <label for="chk_box' + num + '"' + '></label>\
+                            </div>';
+          try {
+            insertElement +=array[a][b];
+            insertElement +='</th>';
+          } catch (e) {
+            // エラー処理を記述予定
+          };
+        };
+        break;
+      default:
+        insertElement += '<tr>';
+        for (let b = 0; b < column; b++){
+          try {
+            insertElement +='<td>'+array[a][b]+'</td>';
+          } catch (e) {
+            // エラー処理を記述予定
+          };
+        };
+        insertElement += '<tr/>';
+        break;
     }
-    for (let b = 0; b < column; b++){
-      try {
-        insertElement +='<td>'+array[a][b]+'</td>';
-      } catch (e) {
-        // エラー処理などを記述予定
-      }
-    }
-    insertElement += '</tr>';
-  }
+  };
   insertElement += '<tr>';
   for (let b = 0; b < column; b++){
     insertElement +='<td>⁝</td>';
-  }
-  insertElement += '<tr>';
+  };
+  insertElement += '</tr>';
   return(insertElement);
 }
 function MakeTable(){
   document.getElementById("loader-wrap").style.display ="";
-  var reader = new FileReader();
-  var data = document.getElementById("file_select").files;
-  reader.readAsText(data[0]);
-  reader.onload = function(){
-    CsvToArray(reader.result);
+  CsvEncoder()
+}
+
+function CsvEncoder() {
+  var func_name = arguments.callee.name;
+  var form_data = new FormData(document.forms.file_select_form);
+  $.ajax({
+    url: '/cgi-bin/3d_co_occurense_network/server/py/csv_encoder.py',
+    type: 'post',
+    processData: false,
+    contentType: false,
+    data: form_data,
+    error: function(jqxhr, status, exception) {
+      console.debug('jqxhr', jqxhr);
+      console.debug('status', status);
+      console.debug('exception', exception);
+    }
+  }).done(function(data){
+    console.log("Ajax:" + func_name + "()⇒Success!\n-----------return---------------\n");
+    CsvToArray(data);
     var table = ArrayToTable(data_array);
     document.getElementById("data_check_table").innerHTML = table;
     document.getElementById("data_check_form").style.display ="";
     DataUpload()
-  }
+  }).fail(function (data) {
+    console.log("Ajax:" + func_name + "()⇒Failed...\n-----------return---------------\n" + data);
+  }).always(function(data){
+  });
 }
 
 function ValueUpdate(){
@@ -137,6 +174,7 @@ function RequestSend(){
       checked_column : checked_column,
       lowest_occure : lowest_occure,
       lowest_simpson :lowest_simpson,
+      screen_size: RemToPx(1),
     },
     error: function(jqxhr, status, exception) {
       console.debug('jqxhr', jqxhr);
@@ -183,15 +221,15 @@ function DataReceive(){
                   Plotly.newPlot("received_data",' + data + ',' + JSON.stringify(layout) + ',' + JSON.stringify(congfig) + ');\
                 </script>'
     $('#received_data').append(plot);
-    document.getElementById("received_data").style.visibility = "";
-    document.getElementById('network_name').innerText = GraphName(checked_column, data_array[0])
+    document.getElementById("received_data").style.display ="";
+    document.getElementById('network_name').innerText = GraphName(checked_column, data_array[0]);
+    document.getElementById("network_name_div").style.display =""
   }).fail(function (data) {
     console.log("Ajax:" + func_name + "()⇒Failed...\n-----------return---------------\n" + user_ip + "_res.json");
   }).always(function(data){
     $("#loader-wrap").fadeOut(300);
   });
 }
-
 function GraphName(arr1, arr2){
   var graph_name = 'Network for: '
   for (var i = 0; i < arr1.length; i++) {
@@ -208,10 +246,8 @@ var axis_lo = {
   showticklabels: false,
   title:'',
 }
-
 var layout = {
   hovermode:'closest',
-  uirevision: 1,
   margin: {
   	l: 0,
   	r: 0,
@@ -220,24 +256,34 @@ var layout = {
   },
   font: {
     size: RemToPx(2),
+    color: "#a3a3a3",
+    family: "Arial",
  },
  scene: {
    xaxis: axis_lo,
    yaxis: axis_lo,
    zaxis: axis_lo,
+   projection: {
+     type: "perspective",
+   },
  },
  showlegend: false,
  hoverlabel: {
+   align: "left",
    font: {
      size: RemToPx(2),
+     family: "Arial",
    },
-  bgcolor: "rgb(255, 255, 255)",
- }
+   bgcolor: "rgb(248, 255, 205)",
+  },
+  modebar: {
+    // color: "rgb(255, 255, 255)",
+    // bgcolor:"rgb(103, 197, 255)",
+    add:["eraseshape"],
+    remove:["tableRotation", "resetCameraLastSave3d", "toimage", "resetCameraDefault3d", "reset"],
+  },
 }
-
 var congfig = {
   displayModeBar: true,
-  toImageButtonOptions: {
-    format: 'html',
-  },
+  displaylogo: false,
 }
