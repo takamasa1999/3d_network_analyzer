@@ -1,6 +1,3 @@
-# 3d_co_occurense_network
-
----
 ## Information
 
 Origin: 2022/8/22  
