@@ -7,8 +7,8 @@
   "background_color"  : "#ff0000",
   "theme_color"       : "#ff0000",
   "icons": [{
-      "src"           : "src/icon.jpg",
-      "sizes"         : "1600x1600",
-      "type"          : "image/jpg"
+      "src"           : "src/app_icon.png",
+      "sizes"         : "96x96",
+      "type"          : "image/png"
     }]
 }
