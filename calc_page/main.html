@@ -8,6 +8,14 @@
     <!-- ライブラリ読み込みなのでheadの最後 -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdn.plot.ly/plotly-2.14.0.min.js"></script>
+    <link rel="manifest" href="manifest.json">
+    <script type="text/javascript">
+      if('serviceWorker' in navigator){
+    	  navigator.serviceWorker.register('service_worker.js').then(function(){
+    		  console.log("Service Worker is registered!!");
+    	  });
+      };
+    </script>
   </head>
   <body>
     <div class="loader-wrap" id="loader-wrap">
