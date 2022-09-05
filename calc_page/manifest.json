@@ -4,8 +4,8 @@
   "description"       : "This app can analize your data with 3D images",
   "start_url"         : "https://tkworkfrom220320.com/3d_network_analysis/calc_page/main.html",
   "display"           : "standalone",
-  "background_color"  : "#ff0000",
-  "theme_color"       : "#ff0000",
+  "background_color"  : "#FEFFF5",
+  "theme_color"       : "#FEFFF5",
   "icons": [{
       "src"           : "src/app_icon.png",
       "sizes"         : "96x96",

@@ -7,16 +7,15 @@ function GenRandom(){
   return(rand_str)
 }
 var page_id = GenRandom();
-
-// 初期表示
-document.getElementById("data_check_form").style.display ="none";
-document.getElementById("loader-wrap").style.display ="none";
-document.getElementById("received_data").style.display ="none";
-document.getElementById("value_form").style.display ="none";
-document.getElementById("update_value_label").style.display ="none";
-document.getElementById("network_name_div").style.display ="none";
 document.getElementById("page_id").style.display ="none";
 document.getElementById("page_id").value = page_id;
+
+// 初期表示
+document.getElementById("loader-wrap").style.display ="none";
+document.getElementById("received_data").style.display ="none";
+document.getElementById("data_check_form").style.display ="none";
+document.getElementById("value_form").style.display ="none";
+document.getElementById("network_name_div").style.display ="none";
 
 function RemToPx(rem) {
   var fontSize = getComputedStyle(document.documentElement).fontSize;
@@ -71,14 +70,13 @@ function GetArrayData(){
     document.getElementById("data_check_table_body").innerHTML = table;
     document.getElementById("data_check_form").style.display ="";
     document.getElementById("value_form").style.display ="";
-    document.getElementById("update_value_label").style.display ="";
     if (document.getElementById('data_check_table_body').clientHeight > document.getElementById('col&chk').clientHeight*3.5) {
       document.getElementById('data_check_form').style.height = document.getElementById('col&chk').clientHeight*3.5 + 'px';
     }else {
       document.getElementById('data_check_form').style.height = document.getElementById('data_check_table_body').clientHeight + 'px';
     };
-    if (document.getElementById('data_check_table_body').clientWidth > ($(window).width())*0.98) {
-      document.getElementById('data_check_form').style.width = $(window).width()*0.98 + 'px';
+    if (document.getElementById('data_check_table_body').clientWidth > ($(window).width())*0.975) {
+      document.getElementById('data_check_form').style.width = $(window).width()*0.975 + 'px';
     }else {
       document.getElementById('data_check_form').style.width = document.getElementById('data_check_table_body').clientWidth + 'px';
     };
@@ -94,7 +92,7 @@ function ArrayToTable(json){
   var data = json.data;
   col_name =col;
   var insertElement = '';
-  var row_lim = 40;
+  var row_lim = 20;
   insertElement += '<tr id="col&chk">';
   for (var i = 0; i < col.length; i++) {
     insertElement += '<th>';
@@ -192,6 +190,7 @@ function PlotRequest(){
       lowest_simpson :lowest_simpson,
       remove_word : GetRwTxtValue(),
       screen_size: RemToPx(1),
+      show_hv_txt: GetHvtxtOption(),
     },
     error: function(jqxhr, status, exception) {
       console.debug('jqxhr', jqxhr);
@@ -260,12 +259,15 @@ function GraphName(arr1, arr2){
   };
   return(graph_name)
 };
+function GetHvtxtOption(){
+  var result = document.getElementById("hv_txt").checked;
+  return(result)
+}
 
 // グラフレイアウト
 var axis_lo = {
   showticklabels: false,
   title:'',
-  // gridwidth:RemToPx(0.1),
 }
 var layout = {
   hovermode:'closest',
@@ -277,7 +279,7 @@ var layout = {
   },
   font: {
     size: RemToPx(2),
-    color: "#bab8b8",
+    color: "rgb(220, 220, 220)",
     family: "Arial",
  },
  scene: {
@@ -298,8 +300,6 @@ var layout = {
    bgcolor: "rgb(248, 255, 205)",
   },
   modebar: {
-    // color: "rgb(255, 255, 255)",
-    // bgcolor:"rgb(103, 197, 255)",
     add:["eraseshape"],
     remove:["tableRotation", "resetCameraLastSave3d", "toimage", "resetCameraDefault3d", "reset"],
   },
