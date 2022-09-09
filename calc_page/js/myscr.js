@@ -12,6 +12,7 @@ document.getElementById("page_id").value = page_id;
 
 // 初期表示
 document.getElementById("loader-wrap").style.display ="none";
+document.getElementById("rfl_message").style.display ="none";
 document.getElementById("received_data").style.display ="none";
 document.getElementById("data_check_form").style.display ="none";
 document.getElementById("value_form").style.display ="none";
@@ -207,11 +208,9 @@ function PlotRequest(){
   }).fail(function (data) {
     console.log("Ajax:" + func_name + "()⇒Failed...\n-----------return---------------\n" + data);
   }).always(function(data){
-    $("#loader-wrap").fadeOut(300);
   });
 }
 function DataReceive(){
-  $("#loader-wrap").fadeIn(300);
   var func_name = arguments.callee.name
   $.ajax({
     url: '/cgi-bin/3d_network_analysis/php/plot_data_receive.php',
@@ -228,6 +227,7 @@ function DataReceive(){
   }).done(function(data){
     console.log("Ajax:" + func_name + "()⇒Success!\n-----------return---------------\n");
     console.dir(data.data)
+    $("#rfl_message").fadeIn(10);
     let parent = document.getElementById('received_data');
     while(parent.lastChild){
       parent.removeChild(parent.lastChild);
@@ -237,15 +237,15 @@ function DataReceive(){
                   window.PLOTLYENV=window.PLOTLYENV || {};\
                   Plotly.newPlot("received_data",' + plot_data + ',' + JSON.stringify(layout) + ',' + JSON.stringify(congfig) + ');\
                 </script>'
-
     $('#received_data').append(plot);
     document.getElementById("received_data").style.display ="";
     document.getElementById('network_name').innerText = GraphName(checked_column, col_name);
     document.getElementById("network_name_div").style.display =""
+    $("#loader-wrap").fadeOut(300);
+    $("#rfl_message").fadeOut(10);
   }).fail(function (data) {
     console.log("Ajax:" + func_name + "()⇒Failed...\n-----------return---------------\n");
   }).always(function(data){
-    $("#loader-wrap").fadeOut(300);
   });
 }
 function GraphName(arr1, arr2){
@@ -278,7 +278,7 @@ var layout = {
   	t: 0,
   },
   font: {
-    size: RemToPx(2),
+    size: RemToPx(2.5),
     color: "rgb(220, 220, 220)",
     family: "Arial",
  },
@@ -294,7 +294,7 @@ var layout = {
  hoverlabel: {
    align: "left",
    font: {
-     size: RemToPx(2.3),
+     size: RemToPx(2.5),
      family: "Arial",
    },
    bgcolor: "rgb(248, 255, 205)",

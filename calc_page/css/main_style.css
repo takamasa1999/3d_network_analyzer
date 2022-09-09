@@ -1,6 +1,7 @@
 :root{
   --tg_switch_scale: 0.25rem;
   --menu_font_size: 2.5rem;
+  --msg_font_size: 4rem;
 }
 
 *{
@@ -134,6 +135,8 @@ a,button{transition: background .3s ease-in-out;outline: none!important;} /* Pre
   background: #f8ffcd;
   border: solid 0.1rem #778ca3;
   vertical-align: top;
+  position: sticky;
+  top: 0
 }
 .data_check_table td {
   text-align: center;
@@ -413,4 +416,22 @@ a,button{transition: background .3s ease-in-out;outline: none!important;} /* Pre
   87.5% {
     box-shadow: 0em -3em 0 0, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 0, -3em 0em 0 0, -2em -2em 0 0.2em;
   }
+}
+#rfl_message {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    font-size: var(--msg_font_size);
+    font-style: italic;
+    color: red;
+    text-shadow: calc(var(--msg_font_size)*0.02) calc(var(--msg_font_size)*0.02) 0px #000, calc(var(--msg_font_size)*0.02) calc(var(--msg_font_size)*0.02) 0px #000,
+          calc(var(--msg_font_size)*0.02) calc(var(--msg_font_size)*0.02) 0px #000,  calc(var(--msg_font_size)*0.02) calc(var(--msg_font_size)*0.02) 0px #000,
+           calc(var(--msg_font_size)*0.02) 0px 0px #000, calc(var(--msg_font_size)*0.02)  0px 0px #000,
+           0px calc(var(--msg_font_size)*0.02) 0px #000,  0px calc(var(--msg_font_size)*0.02) 0px #000;
 }
