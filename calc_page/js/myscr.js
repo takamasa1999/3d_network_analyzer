@@ -298,9 +298,7 @@ var axis_lo = {
   title:'',
 }
 var layout = {
-  clickmode: "select",
-  dragmode: "select",
-  hovermode:"x unified",
+  hovermode:"closest",
   margin: {
   	l: 0,
   	r: 0,
