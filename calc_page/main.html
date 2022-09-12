@@ -14,13 +14,16 @@
 <body>
   <div id='loading'><div class='loadingMsg'>Page loading...</div></div>
   <h1 class = page_top>3D Co-occurrence Network</h1>
-  <form name="file_select_form" id="file_select_form">
-    <label for="file_select" id="file_select_label" class="btn_label1">
-      <input type="file" id="file_select" class="file_select" name="file_select" accept=".csv" onchange="MakeTable()">
-      File select
-    </label>
-    <input type="text" id="page_id" name="page_id" >
-  </form>
+  <div class="row_div" id="row_sec1">
+    <form name="file_select_form" id="file_select_form">
+      <label for="file_select" id="file_select_label" class="btn_label1">
+        <input type="file" id="file_select" class="file_select" name="file_select" accept=".csv" onchange="MakeTable()">
+        File select
+      </label>
+      <input type="text" id="page_id" name="page_id" >
+    </form>
+    <a class="page_link" href="https://tkworkfrom220320.com/3d_network_analysis/index.html">Tutorial</a>
+  </div>
   <form name="data_check_form" class="data_check_form" id="data_check_form">
     <table name="data_check_table" id="data_check_table" class="data_check_table">
       <tbody name="data_check_table_body" id="data_check_table_body" class="data_check_table_body">
