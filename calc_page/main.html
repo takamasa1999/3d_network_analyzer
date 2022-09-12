@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name=”viewport” content=”width=device-width, initial-scale=1″>
   <title>3D data analysis</title>
-  <link rel="stylesheet" href="css/main_style.css">
+  <link rel="stylesheet" href="main_style.css">
   <link rel="manifest" href="manifest.json">
   <link rel="shortcut icon" type="image/png" href="src/favicon.png">
   <!-- ライブラリ読み込みなのでheadの最後 -->
@@ -12,11 +12,8 @@
   <script src="https://cdn.plot.ly/plotly-2.14.0.min.js"></script>
 </head>
 <body>
-  <p id="rfl_message">Refrecting to your browser...<br>Wait me just a second!</p>
-  <div class="loader-wrap" id="loader-wrap">
-    <div class="loader" id="loader">Loading...</div>
-  </div>
-  <h1 class = page_top>3D-network data analysis</h1>
+  <div id='loading'><div class='loadingMsg'>Page loading...</div></div>
+  <h1 class = page_top>3D Co-occurrence Network</h1>
   <form name="file_select_form" id="file_select_form">
     <label for="file_select" id="file_select_label" class="btn_label1">
       <input type="file" id="file_select" class="file_select" name="file_select" accept=".csv" onchange="MakeTable()">
@@ -50,13 +47,13 @@
       <div class="remove_word_div">
         <input class="remove_word" id="remove_word_1" type="text" name="remove_word" value="null">
       </div>
-      <label for="add_btn" class="btn_label2" id="add_btn_label">+</label>
+      <label for="add_btn" class="btn_label1" id="add_btn_label">+</label>
       <input class="add_btn" id="add_btn" type="button" onclick="AddRwTxtBox()">
-      <label for="remove_btn" class="btn_label2" id="remove_btn_label">-</label>
+      <label for="remove_btn" class="btn_label1" id="remove_btn_label">-</label>
       <input class="remove_btn" id="remove_btn" type="button" onclick="RemoveRwTxtBox()" >
     </div>
     <label for="update_value" id=update_value_label class=btn_label1>
-      <button type="button" name="update_value" class="update_value" id="update_value" onclick="ValueUpdate()"></button>
+      <button type="button" name="update_value" class="update_value" id="update_value" onclick="PlotGraph()"></button>
       Plot graph!
     </label>
   </form>
@@ -69,7 +66,7 @@
   <script type="text/javascript">
     if('serviceWorker' in navigator){
   	  navigator.serviceWorker.register('service_worker.js').then(function(){
-  		  console.log("Service Worker is registered!!");
+  		  console.log("Service Worker is registered!");
   	  });
     };
   </script>

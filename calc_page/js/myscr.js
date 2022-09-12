@@ -7,16 +7,36 @@ function GenRandom(){
   return(rand_str)
 }
 var page_id = GenRandom();
+
+function dispLoading(msg){
+  // 引数なし（メッセージなし）を許容
+  if( msg == undefined ){
+    msg = "";
+  }
+  // 画面表示メッセージ
+  var dispMsg = "<div class='loadingMsg'>" + msg + "</div>";
+  // ローディング画像が表示されていない場合のみ出力
+  if($("#loading").length == 0){
+    $("body").append("<div id='loading'>" + dispMsg + "</div>");
+  }
+}
+function removeLoading(){
+  $("#loading").remove();
+}
+
+window.onload = function() {
+  removeLoading();
+}
+
 document.getElementById("page_id").style.display ="none";
 document.getElementById("page_id").value = page_id;
 
 // 初期表示
-document.getElementById("loader-wrap").style.display ="none";
-document.getElementById("rfl_message").style.display ="none";
 document.getElementById("received_data").style.display ="none";
 document.getElementById("data_check_form").style.display ="none";
 document.getElementById("value_form").style.display ="none";
 document.getElementById("network_name_div").style.display ="none";
+
 
 function RemToPx(rem) {
   var fontSize = getComputedStyle(document.documentElement).fontSize;
@@ -24,14 +44,18 @@ function RemToPx(rem) {
 }
 
 // File select
-function MakeTable(){
-  $("#loader-wrap").fadeIn(300);
-  CsvEncoder()
-}
-function CsvEncoder() {
-  var func_name = arguments.callee.name;
-  var form_data = new FormData(document.forms.file_select_form);
-  $.ajax({
+async function MakeTable(){
+  await dispLoading("Importing csv data...")
+  await CsvToArray()
+  var arr = await GetArrayData()
+  var table = ArrayToTable(arr);
+  await TableImprement(table)
+  await removeLoading()
+};
+async function CsvToArray(){
+  var func_name = await arguments.callee.name;
+  var form_data = await new FormData(document.forms.file_select_form);
+  await $.ajax({
     url: '/cgi-bin/3d_network_analysis/py/csv_encoder.py',
     type: 'post',
     processData: false,
@@ -41,18 +65,17 @@ function CsvEncoder() {
       console.debug('jqxhr', jqxhr);
       console.debug('status', status);
       console.debug('exception', exception);
-    }
+    },
   }).done(function(data){
     console.log("Ajax:" + func_name + "()⇒Success!\n-----------return---------------\n" + data);
-    GetArrayData()
   }).fail(function (data) {
     console.log("Ajax:" + func_name + "()⇒Failed...\n-----------return---------------\n" + data);
   }).always(function(data){
   });
-}
-function GetArrayData(){
-  var func_name = arguments.callee.name
-  $.ajax({
+};
+async function GetArrayData(){
+  var func_name = await arguments.callee.name;
+  var ajax = await $.ajax({
     url: '/cgi-bin/3d_network_analysis/php/array_data_receive.php',
     type: 'POST',
     dataType: 'json',
@@ -66,27 +89,27 @@ function GetArrayData(){
     }
   }).done(function(data){
     console.log("Ajax:" + func_name + "()⇒Success!\n-----------return---------------\n");
-    console.dir(data);
-    var table = ArrayToTable(data);
-    document.getElementById("data_check_table_body").innerHTML = table;
-    document.getElementById("data_check_form").style.display ="";
-    document.getElementById("value_form").style.display ="";
-    if (document.getElementById('data_check_table_body').clientHeight > document.getElementById('col&chk').clientHeight*3.5) {
-      document.getElementById('data_check_form').style.height = document.getElementById('col&chk').clientHeight*3.5 + 'px';
-    }else {
-      document.getElementById('data_check_form').style.height = document.getElementById('data_check_table_body').clientHeight + 'px';
-    };
-    if (document.getElementById('data_check_table_body').clientWidth > ($(window).width())*0.975) {
-      document.getElementById('data_check_form').style.width = $(window).width()*0.975 + 'px';
-    }else {
-      document.getElementById('data_check_form').style.width = document.getElementById('data_check_table_body').clientWidth + 'px';
-    };
-    $("#loader-wrap").fadeOut(300);
   }).fail(function (data) {
     console.log("Ajax:" + func_name + "()⇒Failed...\n-----------return---------------\n");
   }).always(function(data){
   });
-}
+  return(ajax);
+};
+function TableImprement(table_data){
+  document.getElementById("data_check_table_body").innerHTML = table_data;
+  document.getElementById("data_check_form").style.display ="";
+  document.getElementById("value_form").style.display ="";
+  if (document.getElementById('data_check_table_body').clientHeight > document.getElementById('col&chk').clientHeight*3.5) {
+    document.getElementById('data_check_form').style.height = document.getElementById('col&chk').clientHeight*3.5 + 'px';
+  }else {
+    document.getElementById('data_check_form').style.height = document.getElementById('data_check_table_body').clientHeight + 'px';
+  };
+  if (document.getElementById('data_check_table_body').clientWidth > ($(window).width())*0.975) {
+    document.getElementById('data_check_form').style.width = $(window).width()*0.975 + 'px';
+  }else {
+    document.getElementById('data_check_form').style.width = document.getElementById('data_check_table_body').clientWidth + 'px';
+  };
+};
 var col_name
 function ArrayToTable(json){
   var col = json.columns;
@@ -104,26 +127,26 @@ function ArrayToTable(json){
     insertElement += col[i];
     insertElement += '</th>';
   };
-  insertElement += '</tr>'
+  insertElement += '</tr>';
   var row_tail = Math.min(data.length, row_lim);
   for (var row = 0; row < row_tail; row++) {
-    insertElement += '<tr>'
+    insertElement += '<tr>';
     for (var elem = 0; elem < col.length; elem++) {
       insertElement += '<td>';
       insertElement += data[row][elem];
       insertElement += '</td>';
     };
-    insertElement += '</tr>'
+    insertElement += '</tr>';
   };
   if (data.length>row_lim) {
-    insertElement +='<tr>'
+    insertElement +='<tr>';
     for (var i = 0; i < col.length; i++) {
       insertElement += '<td>⁝</td>';
     };
-    insertElement +='</tr>'
+    insertElement +='</tr>';
   };
-  return(insertElement)
-}
+  return(insertElement);
+};
 // +,-button
 function AddRwTxtBox(){
   var box_sum = document.getElementsByClassName("remove_word");
@@ -155,15 +178,22 @@ function GetRwTxtValue(){
   return(value_list)
 }
 
-
 // Plot graph
-function ValueUpdate(){
-  GetCheckedColumn()
+async function PlotGraph(){
+  await dispLoading("Calcurating & Plotting...")
+  await GetCheckedColumn()
   if (checked_column.length > 1){
-    PlotRequest()
+    var rsp1 = await Plotter();
+    if (rsp1 == 'plotter.py⇒success!') {
+      var plt_data = await GetPlotter();
+      await GraphImprement(plt_data)
+    }else {
+      alert("Adjust value and try again");
+    };
   }else{
-    alert("Select more than 2 columns.")
-  }
+    alert("Select more than 2 columns.");
+  };
+  await removeLoading();
 }
 var checked_column = [];
 function GetCheckedColumn(){
@@ -175,13 +205,12 @@ function GetCheckedColumn(){
     }
   }
 }
-function PlotRequest(){
-  $("#loader-wrap").fadeIn(300);
-  var lowest_occure = document.getElementById('lowest_occure').value;
-  var lowest_simpson = document.getElementById('lowest_simpson').value;
-  var func_name = arguments.callee.name
-  $.ajax({
-    url: '/cgi-bin/3d_network_analysis/py/calc.py',
+async function Plotter(){
+  var lowest_occure = await document.getElementById('lowest_occure').value;
+  var lowest_simpson = await document.getElementById('lowest_simpson').value;
+  var func_name = await arguments.callee.name;
+  var ajax = await $.ajax({
+    url: '/cgi-bin/3d_network_analysis/py/plotter.py',
     type: 'POST',
     dataType: 'text',
     data : {
@@ -200,19 +229,15 @@ function PlotRequest(){
     }
   }).done(function(data){
     console.log("Ajax:" + func_name + "()⇒Success!\n-----------return---------------\n" + data);
-    if (data == 'calc.py⇒success!') {
-      DataReceive();
-    }else {
-      alert("Adjust value and try again");
-    };
   }).fail(function (data) {
     console.log("Ajax:" + func_name + "()⇒Failed...\n-----------return---------------\n" + data);
   }).always(function(data){
   });
+  return(ajax);
 }
-function DataReceive(){
-  var func_name = arguments.callee.name
-  $.ajax({
+async function GetPlotter(){
+  var func_name = await arguments.callee.name
+  var ajax = await $.ajax({
     url: '/cgi-bin/3d_network_analysis/php/plot_data_receive.php',
     type: 'POST',
     dataType: 'json', //ここがエラーの原因か
@@ -226,27 +251,27 @@ function DataReceive(){
     }
   }).done(function(data){
     console.log("Ajax:" + func_name + "()⇒Success!\n-----------return---------------\n");
-    console.dir(data.data)
-    $("#rfl_message").fadeIn(10);
-    let parent = document.getElementById('received_data');
-    while(parent.lastChild){
-      parent.removeChild(parent.lastChild);
-    }
-    plot_data = JSON.stringify(data.data)
-    var plot = '<script type="text/javascript">\
-                  window.PLOTLYENV=window.PLOTLYENV || {};\
-                  Plotly.newPlot("received_data",' + plot_data + ',' + JSON.stringify(layout) + ',' + JSON.stringify(congfig) + ');\
-                </script>'
-    $('#received_data').append(plot);
-    document.getElementById("received_data").style.display ="";
-    document.getElementById('network_name').innerText = GraphName(checked_column, col_name);
-    document.getElementById("network_name_div").style.display =""
-    $("#loader-wrap").fadeOut(300);
-    $("#rfl_message").fadeOut(10);
+    // console.dir(data.data)
   }).fail(function (data) {
     console.log("Ajax:" + func_name + "()⇒Failed...\n-----------return---------------\n");
   }).always(function(data){
   });
+  return(ajax);
+}
+function GraphImprement(json_data){
+  let parent = document.getElementById('received_data');
+  while(parent.lastChild){
+    parent.removeChild(parent.lastChild);
+  }
+  plot_data = JSON.stringify(json_data.data)
+  var plot = '<script type="text/javascript">\
+                window.PLOTLYENV=window.PLOTLYENV || {};\
+                Plotly.newPlot("received_data",' + plot_data + ',' + JSON.stringify(layout) + ',' + JSON.stringify(congfig) + ');\
+              </script>'
+  $('#received_data').append(plot);
+  document.getElementById("received_data").style.display ="";
+  document.getElementById('network_name').innerText = GraphName(checked_column, col_name);
+  document.getElementById("network_name_div").style.display =""
 }
 function GraphName(arr1, arr2){
   var graph_name = 'Network for: '
@@ -267,6 +292,9 @@ function GetHvtxtOption(){
 // グラフレイアウト
 var axis_lo = {
   showticklabels: false,
+  showgrid: false,
+  zeroline : false,
+  showspikes : false,
   title:'',
 }
 var layout = {
@@ -279,8 +307,7 @@ var layout = {
   },
   font: {
     size: RemToPx(2.5),
-    color: "rgb(220, 220, 220)",
-    family: "Arial",
+    family: "Oleo_Reg, Klee_Reg",
  },
  scene: {
    xaxis: axis_lo,
@@ -295,9 +322,8 @@ var layout = {
    align: "left",
    font: {
      size: RemToPx(2.5),
-     family: "Arial",
    },
-   bgcolor: "rgb(248, 255, 205)",
+   bgcolor: "#FEFFF5",
   },
   modebar: {
     add:["eraseshape"],
