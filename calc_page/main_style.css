@@ -3,10 +3,12 @@
 @font-face {
   font-family: 'Oleo_Reg';
   src: url('font/OleoScript-Regular.ttf');
+  font-display: swap;
 }
 @font-face {
   font-family: 'Klee_Reg';
   src: url('font/KleeOne-Regular.ttf');
+  font-display: swap;
 }
 
 :root{
