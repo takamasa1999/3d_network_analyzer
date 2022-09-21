@@ -1,15 +1,6 @@
 @import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
-
-@font-face {
-  font-family: 'Oleo_Reg';
-  src: url('font/OleoScript-Regular.ttf');
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Klee_Reg';
-  src: url('font/KleeOne-Regular.ttf');
-  font-display: swap;
-}
+@import url('https://fonts.googleapis.com/css2?family=Oleo+Script&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New&display=swap');
 
 :root{
   --tg_switch_scale: 0.26rem;
@@ -19,9 +10,9 @@
 }
 
 *{
-margin:0;
-padding:0;
-font-family:"Oleo_Reg", "Klee_Reg";
+  margin:0;
+  padding:0;
+  font-family: 'Helvetica', 'sans-serif';
 }
 
 .page_link{
@@ -74,7 +65,7 @@ a,button{transition: background .3s ease-in-out;outline: none!important;} /* Pre
   font-size: 4rem;
   padding: 2rem 0;
   text-align: center;
-  font-style: italic;
+  font-family:'Oleo Script';
 }
 
 .add_btn {
@@ -160,7 +151,7 @@ a,button{transition: background .3s ease-in-out;outline: none!important;} /* Pre
 
 .data_check_form {
     overflow: auto;
-    border: solid 0.2rem;
+    /* border: solid 0.2rem; */
     border-radius: 0.5rem;
 }
 .data_check_table{
@@ -213,7 +204,7 @@ a,button{transition: background .3s ease-in-out;outline: none!important;} /* Pre
 }
 /* チェックした時のスタイル */
 .chk_box_div input[type=checkbox]:checked + label:before {
-	content: '\f046';		/* チェックの文字 */
+	content: "\f00c";		/* チェックの文字 */
 	color: #000000;			/* チェックの色 */
 	/* background-color: #67c5ff;/* チェックした時の色 */ */
 }
@@ -331,7 +322,6 @@ a,button{transition: background .3s ease-in-out;outline: none!important;} /* Pre
 .received_data {
     width: 98vw;
     height: 108vw;
-    border: solid 0.1rem #000000;
 }
 
 .network_name_div {
@@ -340,7 +330,7 @@ a,button{transition: background .3s ease-in-out;outline: none!important;} /* Pre
     font-weight: bold;
     color: #000000;
     background: #FFF;
-    border: solid 0.1rem #000000;
+    box-shadow: 0 0 0 0.2rem #ccc inset;
     border-radius: 0.5rem;
 }
 .network_name{
