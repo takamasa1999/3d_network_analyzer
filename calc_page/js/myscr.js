@@ -307,7 +307,7 @@ var layout = {
   },
   font: {
     size: RemToPx(2.5),
-    family: "Oleo_Reg, Klee_Reg",
+    family: "Helvetica, sans-serif",
  },
  scene: {
    xaxis: axis_lo,
@@ -322,6 +322,7 @@ var layout = {
    align: "left",
    font: {
      size: RemToPx(2.5),
+     family: "Helvetica, sans-serif",
    },
    bgcolor: "#FEFFF5",
   },
