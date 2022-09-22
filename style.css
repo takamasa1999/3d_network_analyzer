@@ -45,6 +45,17 @@ a:hover{text-decoration: none; cursor:pointer;}
 	position:relative;
 }
 
+.container.bloc-lg.bloc-xl-lg.bloc-lg-sm{
+	padding: 100px 0;
+}
+
+.container.bloc-lg{
+	padding: 0;
+}
+
+#bloc-2 {
+    padding: 2rem 20px;
+}
 
 /* Sizes */
 
@@ -92,7 +103,7 @@ a:hover{text-decoration: none; cursor:pointer;}
 .dropdown-menu .dropdown-menu{
 	border:none}
 @media (min-width:576px){
-	
+
 .navbar-expand-sm .dropdown-menu .dropdown-menu{
 	border:1px solid rgba(0,0,0,.15);
 	position:absolute;
@@ -147,9 +158,9 @@ button{
 	text-shadow:0 1px 0 rgba(0,0,1,.1);
 	box-shadow: 0 1px 3px rgba(0,0,1,.25), inset 0 1px 0 0 rgba(255,255,255,.15);
 }
-.btn-xl{
-	padding: 16px 40px;
-	font-size: 28px;
+.btn-xl {
+    padding: 16px 40px;
+    font-size: 24px;
 }
 
 /* = Icons
@@ -182,8 +193,6 @@ button{
 	width: 100%;
 }
 }
-
-
 
 
 /* ScrollToTop button */
@@ -275,6 +284,7 @@ h1,h2,h3,h4,h5,h6,p,label,.btn,a{
 }
 
 
+
 /* = Bloc Padding Multi Breakpoint
 -------------------------------------------------------------- */
 
@@ -304,13 +314,13 @@ h1,h2,h3,h4,h5,h6,p,label,.btn,a{
 }
 
 
-/* = Mobile adjustments 
+/* = Mobile adjustments
 -------------------------------------------------------------- */
 @media (max-width: 1024px)
 {
     .bloc.full-width-bloc, .bloc-tile-2.full-width-bloc .container, .bloc-tile-3.full-width-bloc .container, .bloc-tile-4.full-width-bloc .container{
-        padding-left: 0; 
-        padding-right: 0;  
+        padding-left: 0;
+        padding-right: 0;
     }
 }
 @media (max-width: 991px)
@@ -325,7 +335,7 @@ h1,h2,h3,h4,h5,h6,p,label,.btn,a{
         padding-left:0;padding-right:0;
     }
     .btn-dwn{
-       display:none; 
+       display:none;
     }
     .voffset{
         margin-top:5px;
@@ -357,17 +367,17 @@ h1,h2,h3,h4,h5,h6,p,label,.btn,a{
 	.link-style{
 		font-size:30px;
 	}
-	
+
 }
 
 @media (max-width: 575px){
 	.link-style{
-		font-size:20px;
+		font-size:21px;
 		font-family:(null);
 	}
 	.button{
 		font-family:"Oleo Script";
 	}
-	
+
 }
 

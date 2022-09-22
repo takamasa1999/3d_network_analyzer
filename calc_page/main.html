@@ -15,10 +15,10 @@
   <div id='loading'>
     <img src="src/loader.gif" id="loadingImg">
     <div id='loadingMsg'>Page loading...</div>
-    <div id='loadingStatus'>100</div>
-    <div id='loadingType'>type</div>
+    <div id='loadingStatus'></div>
+    <div id='loadingType'></div>
   </div>
-  <h1 class = page_top>3D Network analyze page</h1>
+  <div id="page_top">Analyze page</div>
   <div class="row_div" id="row_sec1">
     <form name="file_select_form" id="file_select_form">
       <label for="file_select" id="file_select_label" class="btn_label1">
@@ -27,7 +27,7 @@
       </label>
       <input type="text" id="page_id" name="page_id" >
     </form>
-    <a class="page_link" href="../index.html">Tutorial</a>
+    <a class="page_link" href="../index.html">tutorial</a>
   </div>
   <form name="data_check_form" class="data_check_form" id="data_check_form">
     <table name="data_check_table" id="data_check_table" class="data_check_table">
@@ -47,10 +47,10 @@
       </div>
       <div class="col_div">
         <label for="hv_txt" class="value_input_label">Hover text</label>
-        <input type="checkbox" class="tg_switch" id="hv_txt">
+        <input type="checkbox" class="tg_switch" id="hv_txt" checked>
       </div>
     </div>
-    <p class=form_elem_name>Remove word</p>
+    <p id="form_elem_name" class="value_input_label">Remove word</p>
     <div class="row_div" id="remove_word_AdRm_div">
       <div class="remove_word_div">
         <input class="remove_word" id="remove_word_1" type="text" name="remove_word" value="null">

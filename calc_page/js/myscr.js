@@ -10,30 +10,27 @@ var page_id = GenRandom();
 
 function updateProgress(e) {
    if (e.lengthComputable) {
-   var percent = e.loaded / e.total;
-   msg = String(percent*100) + "%"
+   var percent = Math.floor((e.loaded/e.total)*10000)/100;
+   msg = String(percent) + "%"
    $("#loadingStatus").text(msg);
    }
 }
 
 function GetProgressName(){
-  $("#loadingType").text(this.message);
+  prg_name = "func:" + this.message
+  $("#loadingType").text(prg_name);
 }
 
 function dispLoading(msg){
   // 引数なし（メッセージなし）を許容
-  // if( msg == undefined ){
-  //   msg = "";
-  // }
+  if( msg == undefined ){
+    msg = "";
+  }
   $("#loadingMsg").text(msg);
   $("#loading").show();
 }
 function hideLoading(){
   $("#loading").hide();
-}
-
-window.onload = function() {
-  hideLoading();
 }
 
 document.getElementById("page_id").style.display ="none";
@@ -44,7 +41,9 @@ document.getElementById("received_data").style.display ="none";
 document.getElementById("data_check_form").style.display ="none";
 document.getElementById("value_form").style.display ="none";
 document.getElementById("network_name_div").style.display ="none";
-
+window.onload = function() {
+  hideLoading();
+}
 
 function RemToPx(rem) {
   var fontSize = getComputedStyle(document.documentElement).fontSize;
@@ -68,15 +67,15 @@ async function CsvToArray(){
   await $.ajax({
     url: '/cgi-bin/3d_network_analysis_back_end/py/csv_encoder.py',
     type: 'post',
-    xhr : function(){
-       XHR = $.ajaxSettings.xhr();
-       XHR.upload.addEventListener('loadstart', {
-                                                  message: func_name,
-                                                  handleEvent: GetProgressName
-                                                  })
-       XHR.upload.addEventListener('progress', updateProgress)
-       return XHR;
-     },
+    // xhr : function(){
+    //    XHR = $.ajaxSettings.xhr();
+    //    XHR.upload.addEventListener('loadstart', {
+    //                                               message: func_name,
+    //                                               handleEvent: GetProgressName
+    //                                             });
+    //    XHR.upload.addEventListener('progress', updateProgress);
+    //    return XHR;
+    //  },
     processData: false,
     contentType: false,
     data: form_data,
@@ -118,8 +117,9 @@ function TableImprement(table_data){
   document.getElementById("data_check_table_body").innerHTML = table_data;
   document.getElementById("data_check_form").style.display ="";
   document.getElementById("value_form").style.display ="";
-  if (document.getElementById('data_check_table_body').clientHeight > document.getElementById('col&chk').clientHeight*3.5) {
-    document.getElementById('data_check_form').style.height = document.getElementById('col&chk').clientHeight*3.5 + 'px';
+  var height_index = 4
+  if (document.getElementById('data_check_table_body').clientHeight > document.getElementById('col&chk').clientHeight*height_index) {
+    document.getElementById('data_check_form').style.height = document.getElementById('col&chk').clientHeight*height_index + 'px';
   }else {
     document.getElementById('data_check_form').style.height = document.getElementById('data_check_table_body').clientHeight + 'px';
   };
@@ -199,7 +199,7 @@ function GetRwTxtValue(){
 
 // Plot graph
 async function PlotGraph(){
-  await dispLoading("Calcurating & Plotting...")
+  await dispLoading("Calcurate & Plotting...")
   await GetCheckedColumn()
   if (checked_column.length > 1){
     var rsp1 = await Plotter();
@@ -326,7 +326,7 @@ var layout = {
   },
   font: {
     size: RemToPx(2.5),
-    family: "Helvetica, sans-serif",
+    family: "Helvetica, Zen Kaku Gothic Antique, sans-serif",
  },
  scene: {
    xaxis: axis_lo,
@@ -341,7 +341,7 @@ var layout = {
    align: "left",
    font: {
      size: RemToPx(2.5),
-     family: "Helvetica, sans-serif",
+     family: "Helvetica, Zen Kaku Gothic Antique, sans-serif",
    },
    bgcolor: "#FEFFF5",
   },
