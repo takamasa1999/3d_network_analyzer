@@ -12,7 +12,12 @@
   <script src="https://cdn.plot.ly/plotly-2.14.0.min.js"></script>
 </head>
 <body>
-  <div id='loading'><div class='loadingMsg'>Page loading...</div></div>
+  <div id='loading'>
+    <img src="src/loader.gif" id="loadingImg">
+    <div id='loadingMsg'>Page loading...</div>
+    <div id='loadingStatus'>100</div>
+    <div id='loadingType'>type</div>
+  </div>
   <h1 class = page_top>3D Network analyze page</h1>
   <div class="row_div" id="row_sec1">
     <form name="file_select_form" id="file_select_form">

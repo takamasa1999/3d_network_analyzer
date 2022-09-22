@@ -38,7 +38,10 @@ body{
 }
 
 #loading {
-  display: table;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   height: 100%;
   position: fixed;
@@ -48,15 +51,17 @@ body{
   opacity: 0.8;
 }
 
-#loading .loadingMsg {
-    display: table-cell;
-    text-align: center;
-    vertical-align: middle;
-    padding-top: 44vw;
-    background: url("src/loader.gif") center center no-repeat;
+#loadingMsg {
     font-size: 2.5rem;
-    background-size: 142vw;
+}
 
+#loadingImg {
+    width: 149vw;
+    margin: -14vw;
+}
+
+#loadingStatus, #loadingType {
+    font-size: 2.5rem;
 }
 
 a,button{transition: background .3s ease-in-out;outline: none!important;} /* Prevent blue selection glow on Chrome and Safari */

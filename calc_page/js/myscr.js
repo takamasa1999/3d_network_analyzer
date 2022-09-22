@@ -8,24 +8,32 @@ function GenRandom(){
 }
 var page_id = GenRandom();
 
+function updateProgress(e) {
+   if (e.lengthComputable) {
+   var percent = e.loaded / e.total;
+   msg = String(percent*100) + "%"
+   $("#loadingStatus").text(msg);
+   }
+}
+
+function GetProgressName(){
+  $("#loadingType").text(this.message);
+}
+
 function dispLoading(msg){
   // 引数なし（メッセージなし）を許容
-  if( msg == undefined ){
-    msg = "";
-  }
-  // 画面表示メッセージ
-  var dispMsg = "<div class='loadingMsg'>" + msg + "</div>";
-  // ローディング画像が表示されていない場合のみ出力
-  if($("#loading").length == 0){
-    $("body").append("<div id='loading'>" + dispMsg + "</div>");
-  }
+  // if( msg == undefined ){
+  //   msg = "";
+  // }
+  $("#loadingMsg").text(msg);
+  $("#loading").show();
 }
-function removeLoading(){
-  $("#loading").remove();
+function hideLoading(){
+  $("#loading").hide();
 }
 
 window.onload = function() {
-  removeLoading();
+  hideLoading();
 }
 
 document.getElementById("page_id").style.display ="none";
@@ -45,12 +53,14 @@ function RemToPx(rem) {
 
 // File select
 async function MakeTable(){
+  await console.log("MakeTable():→start")
   await dispLoading("Importing csv data...")
   await CsvToArray()
   var arr = await GetArrayData()
   var table = ArrayToTable(arr);
   await TableImprement(table)
-  await removeLoading()
+  await hideLoading()
+  await console.log("MakeTable():→end")
 };
 async function CsvToArray(){
   var func_name = await arguments.callee.name;
@@ -58,6 +68,15 @@ async function CsvToArray(){
   await $.ajax({
     url: '/cgi-bin/3d_network_analysis_back_end/py/csv_encoder.py',
     type: 'post',
+    xhr : function(){
+       XHR = $.ajaxSettings.xhr();
+       XHR.upload.addEventListener('loadstart', {
+                                                  message: func_name,
+                                                  handleEvent: GetProgressName
+                                                  })
+       XHR.upload.addEventListener('progress', updateProgress)
+       return XHR;
+     },
     processData: false,
     contentType: false,
     data: form_data,
@@ -77,7 +96,7 @@ async function GetArrayData(){
   var func_name = await arguments.callee.name;
   var ajax = await $.ajax({
     url: '/cgi-bin/3d_network_analysis_back_end/php/array_data_receive.php',
-    type: 'POST',
+    type: 'post',
     dataType: 'json',
     data : {
       file_name : page_id + '_array.json',
@@ -193,7 +212,7 @@ async function PlotGraph(){
   }else{
     alert("Select more than 2 columns.");
   };
-  await removeLoading();
+  await hideLoading();
 }
 var checked_column = [];
 function GetCheckedColumn(){
