@@ -55,7 +55,8 @@ a:hover{text-decoration: none; cursor:pointer;}
 
 .youtube_container {
   width: 100%;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 18 / 9;
+  padding: 0 5%;
 }
 .youtube_container iframe {
   width: 100%;
@@ -79,7 +80,8 @@ a:hover{text-decoration: none; cursor:pointer;}
 /* Light theme */
 
 .d-bloc .card,.l-bloc{
-	color:rgba(0,0,0,.5);
+	color:
+	rgba(0,0,0,.5);
 }
 .d-bloc .card button:hover,.l-bloc button:hover{
 	color:rgba(0,0,0,.7);

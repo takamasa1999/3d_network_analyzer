@@ -1,189 +1,121 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="keywords" content="3D">
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-	<meta name="robots" content="index, follow">
-    <link rel="shortcut icon" type="image/png" href="favicon.png">
-
-	<link rel="stylesheet" type="text/css" href="./css/bootstrap.css?7606">
-	<link rel="stylesheet" type="text/css" href="style.css?383">
-	<link rel="stylesheet" type="text/css" href="./css/feather.min.css">
-	<link href='https://fonts.googleapis.com/css?family=Oleo+Script&display=swap&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-	<link href='https://fonts.googleapis.com/css?family=Pacifico&display=swap&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-    <title>3D-network data analyzer</title>
-
-<!-- Analytics -->
-
-<!-- Analytics END -->
-
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Cache-Control" content="no-cache">
+  <title>3D network analyzer</title>
+  <link rel="stylesheet" href="style/destyle.css">
+  <link rel="stylesheet" href="style/main.css">
+  <link rel="manifest" href="manifest.json">
+  <link rel="shortcut icon" type="image/png" href="src/favicon.png">
+  <!-- ライブラリ読み込みなのでheadの最後 -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.14.0.min.js"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9EEQX7VPG3"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-9EEQX7VPG3');
+  </script>
 </head>
 <body>
-
-<!-- Preloader -->
-<div id="page-loading-blocs-notifaction" class="page-preloader"></div>
-<!-- Preloader END -->
-
-
-<!-- Main container -->
-<div class="page-container">
-
-<!-- bloc-0 -->
-<div class="bloc l-bloc" id="bloc-0">
-	<div class="container bloc-sm bloc-sm-sm">
-		<div class="row">
-			<div class="col">
-				<nav class="navbar navbar-light row navbar-expand-md flex-column" role="navigation">
-					<div class="container-fluid flex-column">
-						<a class="navbar-brand mx-auto link-style">3D Co-occurrence Network Analyzer</a>
-					</div>
-				</nav>
-			</div>
-		</div>
-	</div>
-</div>
-<!-- bloc-0 END -->
-
-<!-- bloc-1 -->
-<div class="bloc l-bloc" id="bloc-1">
-	<div class="container bloc-lg bloc-xl-lg bloc-lg-sm">
-		<div class="row">
-			<div class="col">
-				<div><div id="particles-js"></div>
-				</div>
-				<div class="text-center">
-						<a href="calc_page/main.html" class="btn btn-xl btn-charcoal btn-clean button">Go to analyze page!</a>
-					</div>
-			</div>
-		</div>
-	</div>
-</div>
-<!-- bloc-1 END -->
-
-<!-- bloc-2 -->
-<div class="bloc l-bloc" id="bloc-2">
-	<div class="container bloc-lg">
-		<div class="row">
-			<div class="col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
-				<h3 class="mg-md">
-					How to use:
-				</h3>
-				<p class="p-style">
-          <ol>
-            <li>Prepare a dataset(.csv) for which you want to examine co-occurrence.</li>
-            <li>Press the "Let's analyze!" button above.</li>
-            <li>Press the "File select" button.</li>
-            <li>Open the csv file prepared in step 1.</li>
-            <li>Select at least two columns for which you want to examine co-occurrence.</li>
-            <li>Press the “Plot graph!" button.</li>
-            <li>Your 3D co-occurrence network is ready.</li>
-          </ol>
-          <div class="youtube_container">
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/Z5gJVg8VpDs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  <div id='loading'>
+    <img src="src/loader.gif" id="loadingImg">
+    <div id='loadingMsg'>Page loading...</div>
+    <div id='loadingStatus'></div>
+    <div id='loadingType'></div>
+  </div>
+  <header>
+    <h1>3D network analyzer</h1>
+    <div class="block" id="block_type_1">
+      <a class="link" href="tutorial/index.html">tutorial</a>
+    </div>
+    <div class="block" id="block_type_3">
+      <form name="file_select_form" id="file_select_form">
+        <label for="file_select" class="button" id="button_type_1">File select</label>
+        <input type="file" id="file_select" class="file_select" name="file_select" accept=".csv" onchange="MakeTable()">
+        <input type="text" id="page_id" name="page_id" >
+      </form>
+    </div>
+  </header>
+  <main>
+    <div class="block" id="block_type_10">
+      <div class="block" id="block_type_11">
+        <p id="table_tytle">Data:</p>
+        <div class="slider">
+          <input id="range_1" type="range" min="0.1" max="3" value="1" step="0.01" oninput="ChangeTableWidth()">
+        </div>
+      </div>
+      <form name="data_check_form" class="data_check_form" id="data_check_form">
+        <table name="data_check_table" id="data_check_table" class="data_check_table">
+          <tbody name="data_check_table_body" id="data_check_table_body" class="data_check_table_body">
+          </tbody>
+        </table>
+      </form>
+    </div>
+    <div class="block" id="block_type_9">
+      <div class="block" id="block_type_8">
+        <p id="form_title">Setting:</p>
+        <form id="value_form" class="value_form">
+          <div class="block" id="block_type_5">
+            <div class="block" id="block_type_4">
+              <p class="name_label">Lowest occur</p>
+              <input class="value_input" id="lowest_occure" type="number" min="0" max="10000" step="1" value="10">
+            </div>
+            <div class="block" id="block_type_4">
+              <p class="name_label">Lowest simpson</p>
+              <input class="value_input" id="lowest_simpson" type="number" step="0.1" max="1" min="0" value="0.3">
+            </div>
+            <div class="block" id="block_type_4">
+              <p class="name_label">Display scale</p>
+              <input class="value_input" id="display_scale" type="number" step="0.1" max="3" min="0.1" value="1">
+            </div>
+            <div class="block" id="block_type_4">
+              <p class="name_label">Hover text</p>
+              <input type="checkbox" class="tg_switch" id="hv_txt" checked>
+            </div>
           </div>
-          <br><br>
-          <h3 class="mg-md">
-            Data sample:
-          </h3>
-          Survival of Passengers on the Titanic
-          <ul>
-            <li><a href="src/TitanicSurvival.csv" download>csv</a></li>
-            <li><a href="https://vincentarelbundock.github.io/Rdatasets/doc/carData/TitanicSurvival.html" >doccumentation</a></li>
-          </ul>
-          <br>
-          <h3 class="mg-md">Note:</h3>
-          If you do not have the csv data, you can find from kind like these sites.<br>
-          <ul>
-            <li><a href="https://vincentarelbundock.github.io/Rdatasets/articles/data.html" target="_blank">Rdatasets (reccomend)</a></li>
-            <li><a href="https://data.world/" target="_blank">Data world</a></li>
-            <li><a href="https://perso.telecom-paristech.fr/eagan/class/igr204/datasets" target="_blank">Project datasets</a></li>
-          </ul>
-          This project is working on <a href="https://github.com/takamasa1999/3d_network_analysis" target="_blank">GitHub</a>
-				</p>
-			</div>
-		</div>
-	</div>
-</div>
-<!-- bloc-2 END -->
-
-<!-- bloc-3 -->
-<div class="bloc l-bloc " id="bloc-3">
-	<div class="container bloc-lg">
-		<div class="row">
-			<div class="col">
-				<h3 class="mg-md btn-resize-mode text-lg-center float-md-none text-md-center text-sm-center">
-					Credit:
-				</h3>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-lg-4 col-md-4 offset-lg-1 offset-md-1">
-				<div class="card">
-					<div class="card-body team-card">
-						<img src="img/lazyload-ph.png" data-src="img/90E8897E-3ABC-4340-B0FC-1B0A7881A248.JPG" class="rounded-circle mx-auto d-block mt-5 lazyload" width="100" alt="90E8897E 3ABC-4340-B0FC-1B0A7881A248.JPG" />
-						<h3 class="text-center mg-sm">
-							Repainter
-						</h3>
-						<h5 class="text-center mg-md">
-							Developer
-						</h5>
-						<div class="row">
-							<div class="col-6 col-sm-2 offset-lg-5 col-lg-2 col-md-4 offset-md-4 offset-sm-5 offset-3">
-								<div class="text-center">
-									<a href="https://sites.google.com/view/repaintermypage/%E3%83%9B%E3%83%BC%E3%83%A0" target="_blank"><span class="icon-md feather-icon icon-link"></span></a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-lg-4 col-md-4 offset-lg-2 offset-md-2"><br>
-				<div class="card">
-					<div class="card-body team-card">
-						<img src="img/lazyload-ph.png" data-src="img/IMG_3349%202.jpg" class="rounded-circle mx-auto d-block mt-5 lazyload" width="100" alt="90E8897E 3ABC-4340-B0FC-1B0A7881A248.JPG" />
-						<h3 class="text-center mg-sm">
-							Leende
-						</h3>
-						<h5 class="text-center mg-md">
-							Designer
-						</h5>
-						<div class="row">
-							<div class="col-6 col-sm-2 col-lg-2 offset-lg-5 col-md-4 offset-md-4 offset-sm-5 offset-3">
-								<div class="text-center">
-									<a href="https://leendemusic.github.io/LeendeLinkTree/" target="_blank"><span class="icon-md feather-icon icon-link"></span></a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div><br><br><br>
-			</div>
-		</div>
-	</div>
-</div>
-<!-- bloc-3 END -->
-
-<!-- ScrollToTop Button -->
-<a class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1',this)"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 32 32"><path class="scroll-to-top-btn-icon" d="M30,22.656l-14-13-14,13"/></svg></a>
-<!-- ScrollToTop Button END-->
-
-
-</div>
-<!-- Main container END -->
-
-
-
-<!-- Additional JS --><script src="./js/jquery.min.js"></script>
-
-
-<script src="./js/bootstrap.bundle.js?5392"></script>
-<script src="./js/blocs.js?3259"></script>
-<script src="./js/lazysizes.min.js" defer></script>
-<script src="./js/particles.min.js?9601"></script>
-<script src="./js/particles-setup.js?6564"></script>
-<!-- Additional JS END -->
-
-
+          <p class="name_label">Remove word</p>
+          <div class="block" id="block_type_5">
+            <div class="remove_word_div">
+              <input class="remove_word" id="remove_word_1" type="text" name="remove_word" value="null">
+            </div>
+            <div class="block" id="block_type_6">
+              <button type="button" class="button" id="button_type_2" onclick="AddRwTxtBox()">+</button>
+              <button type="button" class="button" id="button_type_2" onclick="RemoveRwTxtBox()">-</button>
+            </div>
+          </div>
+        </form>
+        <div class="block" id="block_type_3">
+          <button type="button" class="button" id="button_type_1" onclick="PlotGraph()">Plot graph!</button>
+        </div>
+      </div>
+      <div class="block" id="block_type_7">
+        <p id="form_title">Network:</p>
+        <div id="received_data"></div>
+        <div class="network_name_div" id="network_name_div">
+          <p id="form_title">Selected column</p>
+          <p id="network_name" class="network_name">test</p>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <p>© 2022 Repainter, Leende</p>
+    <p><a href="mailto:audiofilesfrom2021@gmail.com" class="link" id="link_type1">audiofilesfrom2021@gmail.com</a></p>
+  </footer>
+  <!-- 実行系scriptなのでbodyの最後 -->
+  <script type="text/javascript" src="js/myscr.js"></script>
+  <script type="text/javascript">
+    if('serviceWorker' in navigator){
+  	  navigator.serviceWorker.register('service_worker.js').then(function(){
+  		  console.log("Service Worker is registered!");
+  	  });
+    };
+  </script>
 </body>
 </html>

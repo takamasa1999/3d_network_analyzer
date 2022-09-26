@@ -33,16 +33,25 @@ function hideLoading(){
   $("#loading").hide();
 }
 
+function ChangeTableWidth(){
+  val =  document.getElementById('range_1').value;
+  val = String(val*26) + "vw"
+  dom = document.getElementsByClassName('table_col')
+  for (var i = 0; i < dom.length; i++) {
+    dom[i].style.width = val
+  }
+}
+
 document.getElementById("page_id").style.display ="none";
 document.getElementById("page_id").value = page_id;
 
 // 初期表示
-document.getElementById("received_data").style.display ="none";
-document.getElementById("data_check_form").style.display ="none";
-document.getElementById("value_form").style.display ="none";
-document.getElementById("network_name_div").style.display ="none";
+// document.getElementById("received_data").style.display ="none";
+document.getElementById("block_type_10").style.display ="none";
+document.getElementById("block_type_8").style.display ="none";
+document.getElementById("block_type_7").style.display ="none";
 window.onload = function() {
-  hideLoading();
+  hideLoading()
 }
 
 function RemToPx(rem) {
@@ -58,6 +67,7 @@ async function MakeTable(){
   var arr = await GetArrayData()
   var table = ArrayToTable(arr);
   await TableImprement(table)
+  document.getElementById("block_type_8").style.display = await "";
   await hideLoading()
   await console.log("MakeTable():→end")
 };
@@ -115,19 +125,18 @@ async function GetArrayData(){
 };
 function TableImprement(table_data){
   document.getElementById("data_check_table_body").innerHTML = table_data;
-  document.getElementById("data_check_form").style.display ="";
-  document.getElementById("value_form").style.display ="";
-  var height_index = 4
-  if (document.getElementById('data_check_table_body').clientHeight > document.getElementById('col&chk').clientHeight*height_index) {
-    document.getElementById('data_check_form').style.height = document.getElementById('col&chk').clientHeight*height_index + 'px';
-  }else {
-    document.getElementById('data_check_form').style.height = document.getElementById('data_check_table_body').clientHeight + 'px';
-  };
-  if (document.getElementById('data_check_table_body').clientWidth > ($(window).width())*0.975) {
-    document.getElementById('data_check_form').style.width = $(window).width()*0.975 + 'px';
-  }else {
-    document.getElementById('data_check_form').style.width = document.getElementById('data_check_table_body').clientWidth + 'px';
-  };
+  document.getElementById("block_type_10").style.display ="";
+  // var height_index = 4
+  // if (document.getElementById('data_check_table_body').clientHeight > document.getElementById('col&chk').clientHeight*height_index) {
+  //   document.getElementById('data_check_form').style.height = document.getElementById('col&chk').clientHeight*height_index + 'px';
+  // }else {
+  //   document.getElementById('data_check_form').style.height = document.getElementById('data_check_table_body').clientHeight + 'px';
+  // };
+  // if (document.getElementById('data_check_table_body').clientWidth > ($(window).width())*0.975) {
+  //   document.getElementById('data_check_form').style.width = $(window).width()*0.975 + 'px';
+  // }else {
+  //   document.getElementById('data_check_form').style.width = document.getElementById('data_check_table_body').clientWidth + 'px';
+  // };
 };
 var col_name
 function ArrayToTable(json){
@@ -138,12 +147,12 @@ function ArrayToTable(json){
   var row_lim = 20;
   insertElement += '<tr id="col&chk">';
   for (var i = 0; i < col.length; i++) {
-    insertElement += '<th>';
+    insertElement += '<th class="table_col">';
     insertElement += '<div class="chk_box_div">\
                         <input type="checkbox" name="chk_box"' + ' id="chk_box' + i + '"' +' value=' + i + '>\
-                        <label for="chk_box' + i + '"' + '></label>\
-                      </div>';
-    insertElement += col[i];
+                        <label for="chk_box' + i + '"' + '></label>';
+    insertElement += '<p class="col_name">' + col[i] + '</p>';
+    insertElement += '</div>';
     insertElement += '</th>';
   };
   insertElement += '</tr>';
@@ -206,6 +215,7 @@ async function PlotGraph(){
     if (rsp1 == 'plotter.py⇒success!') {
       var plt_data = await GetPlotter();
       await GraphImprement(plt_data)
+      document.getElementById("block_type_7").style.display = await ""
     }else {
       alert("Adjust value and try again");
     };
@@ -228,6 +238,7 @@ async function Plotter(){
   var lowest_occure = await document.getElementById('lowest_occure').value;
   var lowest_simpson = await document.getElementById('lowest_simpson').value;
   var func_name = await arguments.callee.name;
+  var display_scale = await document.getElementById('display_scale').value;
   var ajax = await $.ajax({
     url: '/cgi-bin/3d_network_analysis_back_end/py/plotter.py',
     type: 'POST',
@@ -238,8 +249,9 @@ async function Plotter(){
       lowest_occure : lowest_occure,
       lowest_simpson :lowest_simpson,
       remove_word : GetRwTxtValue(),
-      screen_size: RemToPx(1),
+      screen_size: RemToPx(0.5),
       show_hv_txt: GetHvtxtOption(),
+      display_scale: display_scale,
     },
     error: function(jqxhr, status, exception) {
       console.debug('jqxhr', jqxhr);
@@ -288,12 +300,10 @@ function GraphImprement(json_data){
                 Plotly.newPlot("received_data",' + plot_data + ',' + JSON.stringify(layout) + ',' + JSON.stringify(congfig) + ');\
               </script>'
   $('#received_data').append(plot);
-  document.getElementById("received_data").style.display ="";
   document.getElementById('network_name').innerText = GraphName(checked_column, col_name);
-  document.getElementById("network_name_div").style.display =""
 }
 function GraphName(arr1, arr2){
-  var graph_name = 'Network for: '
+  var graph_name = ''
   for (var i = 0; i < arr1.length; i++) {
     col_num = arr1[i]
     graph_name+=arr2[col_num]
@@ -325,8 +335,8 @@ var layout = {
   	t: 0,
   },
   font: {
-    size: RemToPx(2.5),
-    family: "Helvetica, Zen Kaku Gothic Antique, sans-serif",
+    size: RemToPx(1),
+    family: "Open Sans, Zen Kaku Gothic Antique, sans-serif",
  },
  scene: {
    xaxis: axis_lo,
@@ -340,8 +350,8 @@ var layout = {
  hoverlabel: {
    align: "left",
    font: {
-     size: RemToPx(2.5),
-     family: "Helvetica, Zen Kaku Gothic Antique, sans-serif",
+     size: RemToPx(1),
+     family: "Open Sans, Zen Kaku Gothic Antique, sans-serif",
    },
    bgcolor: "#FEFFF5",
   },
