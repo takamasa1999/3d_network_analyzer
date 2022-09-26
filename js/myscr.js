@@ -75,7 +75,7 @@ async function CsvToArray(){
   var func_name = await arguments.callee.name;
   var form_data = await new FormData(document.forms.file_select_form);
   await $.ajax({
-    url: '/cgi-bin/3d_network_analysis_back_end/py/csv_encoder.py',
+    url: '/cgi-bin/3d_network_analyzer_server/py/csv_encoder.py',
     type: 'post',
     // xhr : function(){
     //    XHR = $.ajaxSettings.xhr();
@@ -104,7 +104,7 @@ async function CsvToArray(){
 async function GetArrayData(){
   var func_name = await arguments.callee.name;
   var ajax = await $.ajax({
-    url: '/cgi-bin/3d_network_analysis_back_end/php/array_data_receive.php',
+    url: '/cgi-bin/3d_network_analyzer_server/php/array_data_receive.php',
     type: 'post',
     dataType: 'json',
     data : {
@@ -240,7 +240,7 @@ async function Plotter(){
   var func_name = await arguments.callee.name;
   var display_scale = await document.getElementById('display_scale').value;
   var ajax = await $.ajax({
-    url: '/cgi-bin/3d_network_analysis_back_end/py/plotter.py',
+    url: '/cgi-bin/3d_network_analyzer_server/py/plotter.py',
     type: 'POST',
     dataType: 'text',
     data : {
@@ -269,7 +269,7 @@ async function Plotter(){
 async function GetPlotter(){
   var func_name = await arguments.callee.name
   var ajax = await $.ajax({
-    url: '/cgi-bin/3d_network_analysis_back_end/php/plot_data_receive.php',
+    url: '/cgi-bin/3d_network_analyzer_server/php/plot_data_receive.php',
     type: 'POST',
     dataType: 'json', //ここがエラーの原因か
     data : {
