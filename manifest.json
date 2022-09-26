@@ -1,8 +1,8 @@
 {
-  "name"              : "3D network analysis",
+  "name"              : "3D network analyzer",
   "short_name"        : "3D net",
-  "description"       : "This app can analize your data with 3D images",
-  "start_url"         : "https://tkworkfrom220320.com/3d_network_analysis/calc_page/main.html",
+  "description"       : "3D co-occuurence network generater based on Simpson coefficiient",
+  "start_url"         : "https://tkworkfrom220320.com/3d_network_analyzer/",
   "display"           : "standalone",
   "background_color"  : "#FEFFF5",
   "theme_color"       : "#FEFFF5",
