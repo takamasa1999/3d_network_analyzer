@@ -21,18 +21,6 @@ function GetProgressName(){
   $("#loadingType").text(prg_name);
 }
 
-function dispLoading(msg){
-  // 引数なし（メッセージなし）を許容
-  if( msg == undefined ){
-    msg = "";
-  }
-  $("#loadingMsg").text(msg);
-  $("#loading").show();
-}
-function hideLoading(){
-  $("#loading").hide();
-}
-
 function ChangeTableWidth(){
   val =  document.getElementById('range_1').value;
   val = String(val*26) + "vw"
@@ -50,9 +38,9 @@ document.getElementById("page_id").value = page_id;
 document.getElementById("block_type_10").style.display ="none";
 document.getElementById("block_type_8").style.display ="none";
 document.getElementById("block_type_7").style.display ="none";
-window.onload = function() {
-  hideLoading()
-}
+// window.onload = function() {
+  // HideLoader()
+// }
 
 function RemToPx(rem) {
   var fontSize = getComputedStyle(document.documentElement).fontSize;
@@ -62,30 +50,22 @@ function RemToPx(rem) {
 // File select
 async function MakeTable(){
   await console.log("MakeTable():→start")
-  await dispLoading("Importing csv data...")
-  await CsvToArray()
-  var arr = await GetArrayData()
-  var table = ArrayToTable(arr);
+  await ShowLoader("Importing csv data...")
+  var arr = await CsvToArray().then(GetArrayData)
+  table = await ArrayToTable(arr);
   await TableImprement(table)
   document.getElementById("block_type_8").style.display = await "";
-  await hideLoading()
+  await HideLoader()
   await console.log("MakeTable():→end")
 };
-async function CsvToArray(){
-  var func_name = await arguments.callee.name;
-  var form_data = await new FormData(document.forms.file_select_form);
-  await $.ajax({
+function CsvToArray(){
+  var dfd = $.Deferred();
+  var func_name = arguments.callee.name;
+  var form_data = new FormData(document.forms.file_select_form);
+  $.ajax({
+    async: true,
     url: '/cgi-bin/3d_network_analyzer_server/py/csv_encoder.py',
     type: 'post',
-    // xhr : function(){
-    //    XHR = $.ajaxSettings.xhr();
-    //    XHR.upload.addEventListener('loadstart', {
-    //                                               message: func_name,
-    //                                               handleEvent: GetProgressName
-    //                                             });
-    //    XHR.upload.addEventListener('progress', updateProgress);
-    //    return XHR;
-    //  },
     processData: false,
     contentType: false,
     data: form_data,
@@ -96,14 +76,17 @@ async function CsvToArray(){
     },
   }).done(function(data){
     console.log("Ajax:" + func_name + "()⇒Success!\n-----------return---------------\n" + data);
+    dfd.resolve();
   }).fail(function (data) {
     console.log("Ajax:" + func_name + "()⇒Failed...\n-----------return---------------\n" + data);
   }).always(function(data){
   });
+  return dfd.promise();
 };
-async function GetArrayData(){
-  var func_name = await arguments.callee.name;
-  var ajax = await $.ajax({
+function GetArrayData(){
+  var func_name = arguments.callee.name;
+  return $.ajax({
+    async: true,
     url: '/cgi-bin/3d_network_analyzer_server/php/array_data_receive.php',
     type: 'post',
     dataType: 'json',
@@ -121,7 +104,6 @@ async function GetArrayData(){
     console.log("Ajax:" + func_name + "()⇒Failed...\n-----------return---------------\n");
   }).always(function(data){
   });
-  return(ajax);
 };
 function TableImprement(table_data){
   document.getElementById("data_check_table_body").innerHTML = table_data;
@@ -208,12 +190,12 @@ function GetRwTxtValue(){
 
 // Plot graph
 async function PlotGraph(){
-  await dispLoading("Calcurate & Plotting...")
+  await ShowLoader("Calcuration & Plotting...")
   await GetCheckedColumn()
   if (checked_column.length > 1){
     var rsp1 = await Plotter();
     if (rsp1 == 'plotter.py⇒success!') {
-      var plt_data = await GetPlotter();
+      var plt_data = await PlotCalcuration();
       await GraphImprement(plt_data)
       document.getElementById("block_type_7").style.display = await ""
     }else {
@@ -222,7 +204,7 @@ async function PlotGraph(){
   }else{
     alert("Select more than 2 columns.");
   };
-  await hideLoading();
+  await HideLoader();
 }
 var checked_column = [];
 function GetCheckedColumn(){
@@ -235,11 +217,12 @@ function GetCheckedColumn(){
   }
 }
 async function Plotter(){
-  var lowest_occure = await document.getElementById('lowest_occure').value;
-  var lowest_simpson = await document.getElementById('lowest_simpson').value;
-  var func_name = await arguments.callee.name;
-  var display_scale = await document.getElementById('display_scale').value;
-  var ajax = await $.ajax({
+  var lowest_occure = document.getElementById('lowest_occure').value;
+  var lowest_simpson = document.getElementById('lowest_simpson').value;
+  var func_name = arguments.callee.name;
+  var display_scale = document.getElementById('display_scale').value;
+  return $.ajax({
+    async: true,
     url: '/cgi-bin/3d_network_analyzer_server/py/plotter.py',
     type: 'POST',
     dataType: 'text',
@@ -264,11 +247,11 @@ async function Plotter(){
     console.log("Ajax:" + func_name + "()⇒Failed...\n-----------return---------------\n" + data);
   }).always(function(data){
   });
-  return(ajax);
 }
-async function GetPlotter(){
-  var func_name = await arguments.callee.name
-  var ajax = await $.ajax({
+function PlotCalcuration(){
+  var func_name = arguments.callee.name
+  return $.ajax({
+    async: true,
     url: '/cgi-bin/3d_network_analyzer_server/php/plot_data_receive.php',
     type: 'POST',
     dataType: 'json', //ここがエラーの原因か
@@ -282,12 +265,10 @@ async function GetPlotter(){
     }
   }).done(function(data){
     console.log("Ajax:" + func_name + "()⇒Success!\n-----------return---------------\n");
-    // console.dir(data.data)
   }).fail(function (data) {
     console.log("Ajax:" + func_name + "()⇒Failed...\n-----------return---------------\n");
   }).always(function(data){
   });
-  return(ajax);
 }
 function GraphImprement(json_data){
   let parent = document.getElementById('received_data');

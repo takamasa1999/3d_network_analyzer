@@ -8,10 +8,9 @@
 body{
 	margin:0;
 	padding:0;
-    background:#FEFFF5;
-    overflow-x:hidden;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+	overflow-x:hidden;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 .page-container{overflow: hidden;} /* Prevents unwanted scroll space when scroll FX used. */
 a,button{transition: background .3s ease-in-out;outline: none!important;} /* Prevent blue selection glow on Chrome and Safari */
@@ -46,7 +45,7 @@ a:hover{text-decoration: none; cursor:pointer;}
 }
 
 .container.bloc-lg.bloc-xl-lg.bloc-lg-sm{
-	padding: 100px 0;
+	padding: 100px 20%;
 }
 
 .container.bloc-lg{
@@ -56,7 +55,7 @@ a:hover{text-decoration: none; cursor:pointer;}
 .youtube_container {
   width: 100%;
   aspect-ratio: 18 / 9;
-  padding: 0 5%;
+  padding: 0 6%;
 }
 .youtube_container iframe {
   width: 100%;
@@ -80,8 +79,6 @@ a:hover{text-decoration: none; cursor:pointer;}
 /* Light theme */
 
 .d-bloc .card,.l-bloc{
-	color:
-	rgba(0,0,0,.5);
 }
 .d-bloc .card button:hover,.l-bloc button:hover{
 	color:rgba(0,0,0,.7);
@@ -93,7 +90,7 @@ a:hover{text-decoration: none; cursor:pointer;}
 	border-color:rgba(0,0,0,.1);
 }
 .d-bloc .card .a-btn,.l-bloc .a-btn,.l-bloc .navbar a,.l-bloc a .icon-sm, .l-bloc a .icon-md, .l-bloc a .icon-lg, .l-bloc a .icon-xl, .l-bloc h1 a, .l-bloc h2 a, .l-bloc h3 a, .l-bloc h4 a, .l-bloc h5 a, .l-bloc h6 a, .l-bloc p a{
-	color:rgba(0,0,0,.6);
+	/* color:rgba(0,0,0,.6); */
 }
 .d-bloc .card .a-btn:hover,.l-bloc .a-btn:hover,.l-bloc .navbar a:hover, .l-bloc a:hover .icon-sm, .l-bloc a:hover .icon-md, .l-bloc a:hover .icon-lg, .l-bloc a:hover .icon-xl, .l-bloc h1 a:hover, .l-bloc h2 a:hover, .l-bloc h3 a:hover, .l-bloc h4 a:hover, .l-bloc h5 a:hover, .l-bloc h6 a:hover, .l-bloc p a:hover{
 	color:rgba(0,0,0,1);
@@ -236,7 +233,6 @@ button{
 -------------------------------------------------------------- */
 
 h1,h2,h3,h4,h5,h6,p,label,.btn,a{
-	font-family:"Helvetica";
 }
 .container{
 	max-width:1140px;
@@ -272,7 +268,7 @@ h1,h2,h3,h4,h5,h6,p,label,.btn,a{
 /* Button colour styles */
 
 .btn-charcoal{
-	background:#363F4B;
+	background: black;
 	color:#FFFFFF!important;
 }
 .btn-charcoal:hover{
@@ -391,4 +387,3 @@ h1,h2,h3,h4,h5,h6,p,label,.btn,a{
 	}
 
 }
-

@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>3D network analyzer tutorial</title>
+  <meta name="keywords" content="3D">
+  <meta name="description" content="">
+	<meta name="robots" content="index, follow">
+  <link rel="manifest" href="../manifest.json">
+	<link rel="stylesheet" type="text/css" href="./css/bootstrap.css?7606">
+	<link rel="stylesheet" type="text/css" href="./css/feather.min.css">
+</head>
+<body>
+
+  <!-- Main container -->
+  <div class="page-container">
+  <h1>3D network analyzer</h1>
+
+  <!-- bloc-1 -->
+  <div class="bloc l-bloc" id="bloc-1">
+  	<div class="container bloc-lg bloc-xl-lg bloc-lg-sm">
+  		<div class="row">
+  			<div class="col">
+  				<div><div id="particles-js"></div></div>
+  				<div class="text-center">
+  						<!-- <a href="../index.html" class="btn btn-xl btn-charcoal btn-clean button">Go to analyze page!</a> -->
+              <a role="button_type_1" href="../index.html">Go to analyze page</a>
+					</div>
+  			</div>
+  		</div>
+  	</div>
+  </div>
+  <!-- bloc-1 END -->
+
+  <!-- bloc-2 -->
+  <div class="bloc l-bloc" id="bloc-2">
+  	<div class="container bloc-lg">
+  		<div class="row">
+  			<div class="col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+  				<h3 class="mg-md">How to use:</h3>
+  				<p class="p-style">
+            <ol>
+              <li>Prepare a dataset(.csv) for which you want to examine co-occurrence.<br>
+                  *In below, we are offering sample data of Titanic surviver!
+              </li>
+              <li>Press the button above and go to analyze page.</li>
+              <li>Press the "File select" button. and...</li>
+              <li>Open the csv file prepared in step 1.</li>
+              <li>Select at least two columns for which you want to examine co-occurrence.</li>
+              <li>Press the “Plot graph!" button.</li>
+              <li>Your 3D co-occurrence network will be shown and ready to analyze.</li>
+            </ol>
+            In 3D figure out put, the node and edge color depth express how the importance of the results.
+            And if you touch the items, you can check the detail inside.<br>
+            *Attention to smartphone user: For keep camera perspective, tap again inside of the plot area after you controled. (Now we are fixing this problem...)
+            <div role="height_blank_type_1"></div>
+            <div class="youtube_container">
+              <iframe width="560" height="315" src="https://www.youtube.com/embed/Z5gJVg8VpDs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div role="height_blank_type_1"></div>
+            <h3 class="mg-md">Data sample:</h3>
+            Survival of Passengers on the Titanic
+            <ul>
+              <li><a href="src/TitanicSurvival.csv" download>csv</a></li>
+              <li><a href="https://vincentarelbundock.github.io/Rdatasets/doc/carData/TitanicSurvival.html" >doccumentation</a></li>
+            </ul>
+            Sited from: <a href="https://vincentarelbundock.github.io/Rdatasets/articles/data.html">Rdatasets</a>
+            <div role="height_blank_type_1"></div>
+            <h3 class="mg-md">Technical:</h3>
+              This network is constructed on Simpson coefficient.<br>
+              The values brought from the equation below.(A and B are specific elements group)<br>
+              Simpson = A ∩ B / min(A, B)<br>
+              In this network, higher simpson values expressed as deeper blue colors.
+            <div role="height_blank_type_1"></div>
+            <h3 class="mg-md">Note:</h3>
+            Search datasets for validate this program, we used contents form these link below.<br>
+            <ul>
+              <li><a href="https://vincentarelbundock.github.io/Rdatasets/articles/data.html" target="_blank">Rdatasets (reccomend)</a></li>
+              <li><a href="https://data.world/" target="_blank">Data world</a></li>
+              <li><a href="https://perso.telecom-paristech.fr/eagan/class/igr204/datasets" target="_blank">Project datasets</a></li>
+            </ul>
+            *This project is working on <a href="https://github.com/takamasa1999/3d_network_analysis" target="_blank">GitHub</a>
+  				</p>
+  			</div>
+  		</div>
+  	</div>
+  </div>
+  <!-- bloc-2 END -->
+
+  <!-- bloc-3 -->
+  <div class="bloc l-bloc " id="bloc-3">
+  	<div class="container bloc-lg">
+  		<div class="row">
+  			<div class="col">
+  				<h3 class="mg-md btn-resize-mode text-lg-center float-md-none text-md-center text-sm-center">
+  					Credits:
+  				</h3>
+  			</div>
+  		</div>
+  		<div class="row">
+  			<div class="col-lg-4 col-md-4 offset-lg-1 offset-md-1">
+  				<div class="card">
+  					<div class="card-body team-card">
+  						<img src="img/repainter_prof.jpg" class="rounded-circle mx-auto d-block mt-5 lazyload" width="100">
+  						<h3 class="text-center mg-sm">
+  							Repainter
+  						</h3>
+  						<h5 class="text-center mg-md">
+  							Developer
+  						</h5>
+  						<div class="row">
+  							<div class="col-6 col-sm-2 offset-lg-5 col-lg-2 col-md-4 offset-md-4 offset-sm-5 offset-3">
+  								<div class="text-center">
+  									<a href="/" target="_blank"><span class="icon-md feather-icon icon-link"></span></a>
+  								</div>
+  							</div>
+  						</div>
+  					</div>
+  				</div>
+  			</div>
+  			<div class="col-lg-4 col-md-4 offset-lg-2 offset-md-2">
+  				<div class="card">
+  					<div class="card-body team-card">
+  						<img src="img/leende_prof.jpg" class="rounded-circle mx-auto d-block mt-5 lazyload" width="100" alt="leende_prof.jpg">
+  						<h3 class="text-center mg-sm">
+  							Leende
+  						</h3>
+  						<h5 class="text-center mg-md">
+  							Designer
+  						</h5>
+  						<div class="row">
+  							<div class="col-6 col-sm-2 col-lg-2 offset-lg-5 col-md-4 offset-md-4 offset-sm-5 offset-3">
+  								<div class="text-center">
+  									<a href="https://leendemusic.github.io/LeendeLinkTree/" target="_blank"><span class="icon-md feather-icon icon-link"></span></a>
+  								</div>
+  							</div>
+  						</div>
+  					</div>
+  				</div><br><br><br>
+  			</div>
+  		</div>
+  	</div>
+  </div>
+  <!-- bloc-3 END -->
+
+  <!-- ScrollToTop Button -->
+  <!-- <a class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1',this)"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 32 32"><path class="scroll-to-top-btn-icon" d="M30,22.656l-14-13-14,13"/></svg></a> -->
+  <!-- ScrollToTop Button END-->
+
+  </div>
+  <script type="text/javascript"></script>
+  <script src="js/particles-setup.js"></script>
+  <!-- Additional JS END -->
+</body>
+</html>
